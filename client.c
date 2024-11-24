@@ -119,6 +119,23 @@ int main() {
             player.isGrounded = false;
         }
 
+        //Take a screenshot
+        if (IsKeyPressed(KEY_P)) {
+            time_t current_time = time(NULL);
+            char time_str[128];
+            snprintf(time_str, sizeof(time_str), "%ld", current_time - 1466112000);
+            char filename_string[64];
+            strcpy(filename_string, "screenshot_");
+            strcat(filename_string, time_str);
+            strcat(filename_string, ".png");
+            printf("Saving screenshot to: %s\n", filename_string);
+            TakeScreenshot(filename_string);
+            char command[300];
+            snprintf(command, sizeof(command), "mv %s screenshots/", filename_string);
+            system(command);
+        }
+
+
         // Handle camera rotation
         if (IsKeyDown(KEY_LEFT)) player.yaw -= TURN_SPEED * deltaTime;
         if (IsKeyDown(KEY_RIGHT)) player.yaw += TURN_SPEED * deltaTime;
