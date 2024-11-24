@@ -182,6 +182,7 @@ int main() {
 
         DrawChessboard(BOARD_SIZE, SQUARE_SIZE);
         DrawPlayers(player_id, player.position.x, player.position.y, player.position.z, other_player.position.x, other_player.position.y, other_player.position.z);
+        DrawArena();
         DrawThing();
         EndMode3D();
 
