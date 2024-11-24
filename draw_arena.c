@@ -33,12 +33,25 @@ void DrawArena() {
 
     // Draw the loaded model
     Vector3 modelPosition = { -0.0f, -0.82f, -40.0f }; // Adjust position as needed
-    Vector3 modelScale = { 1.0f, 1.0f, 1.0f };    // Scale factor (1/5 = 0.2)
+    Vector3 modelScale = { 1.0f, 1.0f, 1.0f };
     Vector3 rotationAxis = { 1.0f, 0.0f, 0.0f };   // Rotation around Y-axis
-    float rotationAngle =  0.0f * sin(GetTime() * 0.5f * ( sin(GetTime() * 0.1f) + 1)) * 10.0f + 180.0f;       // Rotate over time (30 degrees per second)
+    float rotationAngle =  0.0f * sin(GetTime() * 0.5f * ( sin(GetTime() * 0.1f) + 1)) * 10.0f - 90.0f;
 
     // Draw the model with rotation and scaling
     DrawModelEx(model, modelPosition, rotationAxis, rotationAngle, modelScale, WHITE);
+
+
+
+    Color squareColor = (Color){255, 0, 255, 200};
+
+    Vector3 position = {
+        -61.0f + 1.0f,
+        0.0f + 12.5f,
+        -57.0f + 1.0f
+         };
+
+    DrawCube(position, 2.0f, 25.0f, 2.0f, squareColor);
+    DrawCubeWires(position, 2.0f, 25.0f, 2.0f, BLACK);
 
 
 }

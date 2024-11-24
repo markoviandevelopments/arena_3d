@@ -66,6 +66,7 @@ int main() {
     int dataReceived = 0;
     float frequency = 0.0f;
     float avgBitsPerSecond = 0.0f;
+    bool is_jumping = false;
 
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
@@ -74,6 +75,12 @@ int main() {
         if (!player.isGrounded) {
             player.velocityY += GRAVITY * deltaTime;
         }
+
+        //Check for other grounds
+        if (Grounds(player.position.x, player.position.y, player.position.z) && !is_jumping) {
+            player.velocityY = 0.0f;
+        }
+
 
         // Update player's vertical position
         player.position.y += player.velocityY * deltaTime;
@@ -114,10 +121,14 @@ int main() {
         player.position.z += moveDirection.z;
 
         // Jump
-        if (IsKeyPressed(KEY_SPACE) && player.isGrounded) {
+        if (IsKeyPressed(KEY_SPACE) && (player.isGrounded || Ladders(player.position.x, player.position.y, player.position.z) || Grounds(player.position.x, player.position.y, player.position.z)) ) {
             player.velocityY = 5.0f;
             player.isGrounded = false;
+            is_jumping = true;
+        } else {
+            is_jumping = false;
         }
+
 
         //Take a screenshot
         if (IsKeyPressed(KEY_P)) {
