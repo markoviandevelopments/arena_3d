@@ -32,7 +32,7 @@ void DrawArena() {
 
 
     // Draw the loaded model
-    Vector3 modelPosition = { 91.1f, -0.82f, 0.0f }; // Adjust position as needed
+    Vector3 modelPosition = { -0.0f, -0.82f, -40.0f }; // Adjust position as needed
     Vector3 modelScale = { 1.0f, 1.0f, 1.0f };    // Scale factor (1/5 = 0.2)
     Vector3 rotationAxis = { 1.0f, 0.0f, 0.0f };   // Rotation around Y-axis
     float rotationAngle =  0.0f * sin(GetTime() * 0.5f * ( sin(GetTime() * 0.1f) + 1)) * 10.0f + 180.0f;       // Rotate over time (30 degrees per second)

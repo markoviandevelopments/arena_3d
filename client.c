@@ -186,11 +186,13 @@ int main() {
         DrawThing();
         EndMode3D();
 
-        DrawText("Move with WASD, look with arrow keys, jump with SPACE", 10, 10, 20, RAYWHITE);
-        DrawText(TextFormat("Frequency: %.2f Hz", frequency), 10, 40, 20, RAYWHITE);
-        DrawText(TextFormat("Avg bits/s: %.2f", avgBitsPerSecond), 10, 70, 20, RAYWHITE);
-        DrawText(TextFormat("X: %.2f  Y: %.2f  Z: %.2f", player.position.x, player.position.y, player.position.z), 10, 100, 20, RAYWHITE);
-        DrawText(TextFormat("Session Time: %.2f", GetTime()), 10, 130, 20, RAYWHITE);
+        Color text_color = BLACK;
+
+        DrawText("Move with WASD, look with arrow keys, jump with SPACE", 10, 10, 20, text_color);
+        DrawText(TextFormat("Frequency: %.2f Hz", frequency), 10, 40, 20, text_color);
+        DrawText(TextFormat("Avg bits/s: %.2f", avgBitsPerSecond), 10, 70, 20, text_color);
+        DrawText(TextFormat("ID: %d  X: %.2f  Y: %.2f  Z: %.2f", player_id, player.position.x, player.position.y, player.position.z), 10, 100, 20, text_color);
+        DrawText(TextFormat("Session Time: %.2f", GetTime()), 10, 130, 20, text_color);
         EndDrawing();
     }
 
