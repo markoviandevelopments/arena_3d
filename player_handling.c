@@ -53,7 +53,7 @@ void InitializePlayer(Player *player, Vector3 startPosition) {
     player->position = startPosition;
     player->velocityY = 0.0f;
     player->isGrounded = false;
-    player->yaw = 0.0f;
+    player->yaw = 90.0f;
     player->pitch = 0.0f;
 }
 
