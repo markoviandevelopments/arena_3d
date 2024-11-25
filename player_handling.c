@@ -3,6 +3,9 @@
 
 #include <math.h>
 
+
+int wait_c = 0;
+
 // Update the camera's position and handle rotation
 void UpdatePlayerCamera(Camera3D *camera, Player *player, float deltaTime) {
     // Handle camera/player rotation
@@ -61,7 +64,8 @@ void InitializePlayer(Player *player, Vector3 startPosition) {
 void HandlePlayerMovement(
     Player *player, float deltaTime, bool *isWalking, bool *isRunning,
     bool *isJumping, Vector3 *moveDirection, int (*Walls)(float, float, float),
-    int (*Ladders)(float, float, float) // Pass the ladder check function
+    int (*Ladders)(float, float, float), // Pass the ladder check function
+    int *sensitivity
 ) {
     *isWalking = false;
     *isRunning = false;
@@ -71,13 +75,13 @@ void HandlePlayerMovement(
 
     // Movement input handling
     if (IsKeyDown(KEY_W)) { // Move forward
-        moveDirection->x += cos(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime;
-        moveDirection->z += sin(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime;
+        moveDirection->x += cos(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
+        moveDirection->z += sin(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
         *isWalking = true;
     }
     if (IsKeyDown(KEY_S)) { // Move backward
-        moveDirection->x -= cos(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime;
-        moveDirection->z -= sin(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime;
+        moveDirection->x -= cos(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
+        moveDirection->z -= sin(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
         *isWalking = true;
     }
     if (IsKeyDown(KEY_E)) { // Sprint
@@ -87,15 +91,29 @@ void HandlePlayerMovement(
         *isWalking = false; // Override walking
     }
     if (IsKeyDown(KEY_A)) { // Strafe left
-        moveDirection->x += cos(DEG2RAD * (player->yaw - 90)) * MOVE_SPEED * deltaTime;
-        moveDirection->z += sin(DEG2RAD * (player->yaw - 90)) * MOVE_SPEED * deltaTime;
+        moveDirection->x += cos(DEG2RAD * (player->yaw - 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
+        moveDirection->z += sin(DEG2RAD * (player->yaw - 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
         *isWalking = true;
     }
     if (IsKeyDown(KEY_D)) { // Strafe right
-        moveDirection->x += cos(DEG2RAD * (player->yaw + 90)) * MOVE_SPEED * deltaTime;
-        moveDirection->z += sin(DEG2RAD * (player->yaw + 90)) * MOVE_SPEED * deltaTime;
+        moveDirection->x += cos(DEG2RAD * (player->yaw + 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
+        moveDirection->z += sin(DEG2RAD * (player->yaw + 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
         *isWalking = true;
     }
+
+    if (IsKeyDown(KEY_M) && !wait_c) { // Increase sensitivity
+        (*sensitivity)++;
+        wait_c += 10;
+    }
+    if (IsKeyDown(KEY_N) && !wait_c) { // Decrease Sensitivity
+        (*sensitivity)--;
+        wait_c += 10;
+    }
+
+    if (wait_c > 0) {
+        wait_c--;
+    }
+
 
     // Smooth ladder climbing
     if (player->isOnLadder) {
@@ -123,6 +141,7 @@ void HandlePlayerMovement(
         player->position.x = 0.0f;
         player->position.z = 0.0f;
         player->position.y = 5.0f;
+        player->velocityY = 0.0f;
     }
 
     // Collision handling using proposed position

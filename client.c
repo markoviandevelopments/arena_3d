@@ -20,6 +20,8 @@ double server_time;
 
 float data[10] = {0.0f, -40.0f, 0.0f};
 
+int sensitivity = 0;
+
 int main() {
 
     // Networking variables
@@ -93,7 +95,7 @@ int main() {
         float deltaTime = GetFrameTime();
 
         Vector3 moveDirection = {0.0f, 0.0f, 0.0f};
-        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, &moveDirection, Walls, Ladders);
+        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, &moveDirection, Walls, Ladders, &sensitivity);
 
         isMoving = isWalkingPlayer1 || isRunningPlayer1;
         isRunning = isRunningPlayer1;
@@ -233,6 +235,7 @@ int main() {
         );
         DrawArena();
         DrawSecrethouse();
+        DrawArrowpad();
         DrawThing(server_time);
         DrawBrownian(data);
         //DrawPicture();
@@ -246,6 +249,7 @@ int main() {
         DrawText(TextFormat("ID: %d  X: %.2f  Y: %.2f  Z: %.2f", player_id, player.position.x, player.position.y, player.position.z), 10, 100, 20, text_color);
         DrawText(TextFormat("Session Time: %.2f  Server Time: %.2lf", GetTime(), server_time / 1000.0), 10, 130, 20, text_color);
         DrawText(TextFormat("Agent 1 Score: %.2f  Agent 2 Score: %.2f", data[2], data[5]), 10, 150, 20, text_color);
+        DrawText(TextFormat("Sensitivity: %d", sensitivity), 10, 180, 20, text_color);
         EndDrawing();
     }
     UnloadFoxAnimations();

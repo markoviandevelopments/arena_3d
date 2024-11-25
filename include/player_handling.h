@@ -23,7 +23,8 @@ void InitializePlayer(Player *player, Vector3 startPosition);
 void HandlePlayerMovement(
     Player *player, float deltaTime, bool *isWalking, bool *isRunning,
     bool *isJumping, Vector3 *moveDirection, int (*Walls)(float, float, float),
-    int (*Ladders)(float, float, float)
+    int (*Ladders)(float, float, float),
+    int *sensitivity
 );
 void ApplyGravity(Player *player, float deltaTime);
 void UpdatePlayerCamera(Camera3D *camera, Player *player, float deltaTime);
