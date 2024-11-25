@@ -24,7 +24,7 @@ typedef struct {
 Player playerData [2] = {{ .id = 0, .x = 0.0f, .y = 0.0f, .z = 0.0f }, { .id = 1, .x = 0.0f, .y = 0.0f, .z = 0.0f }};
 int nextPlayerId = 0;
 
-float data[10] = {0.0f, -40.0f, 0.0f};
+float data[10] = {0.0f, -40.0f, 1.0f, 0.0f, -40.0f, 1.0f}; // x-pos, z-pos, food ...
 
 pthread_mutex_t playerMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t dataMutex = PTHREAD_MUTEX_INITIALIZER;
@@ -98,7 +98,7 @@ void *handle_client(void *arg) {
         sscanf(buffer, "%f %f %f %f %f %f", &playerData[player_id].x, &playerData[player_id].y, &playerData[player_id].z,  &playerData[1 - player_id].x, &playerData[1 - player_id].y, &playerData[1 - player_id].z);
         pthread_mutex_unlock(&playerMutex);
 
-        snprintf(buffer, BUFFER_SIZE, "%d %f %f %f %f %f %f %lf %f %f", player_id, playerData[player_id].x, playerData[player_id].y, playerData[player_id].z, playerData[1 - player_id].x, playerData[1 - player_id].y, playerData[1 - player_id].z, current_time, data[0], data[1]);
+        snprintf(buffer, BUFFER_SIZE, "%d %f %f %f %f %f %f %lf %f %f %f %f %f %f", player_id, playerData[player_id].x, playerData[player_id].y, playerData[player_id].z, playerData[1 - player_id].x, playerData[1 - player_id].y, playerData[1 - player_id].z, current_time, data[0], data[1], data[2], data[3], data[4], data[5]);
         send(clientSocket, buffer, strlen(buffer), 0);
     }
 

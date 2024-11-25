@@ -35,6 +35,6 @@ int Grounds(float x, float y, float z);
 int Walls(float x, float y, float z);
 void DrawPicture();
 void AlterBrownian(float *data);
-void DrawBrownian(float x, float z);
+void DrawBrownian(float *data);
 
 #endif

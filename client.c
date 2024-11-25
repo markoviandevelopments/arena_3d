@@ -304,8 +304,8 @@ int main() {
         ssize_t bytesRead = recv(clientSocket, buffer, BUFFER_SIZE - 1, 0);
         if (bytesRead > 0) {
             buffer[bytesRead] = '\0';
-            sscanf(buffer, "%d %f %f %f %f %f %f %lf %f %f", &player_id, &player.position.x, &player.position.y, &player.position.z,
-                   &otherPlayer.position.x, &otherPlayer.position.y, &otherPlayer.position.z, &server_time, &data[0], &data[1]);
+            sscanf(buffer, "%d %f %f %f %f %f %f %lf %f %f %f %f %f %f", &player_id, &player.position.x, &player.position.y, &player.position.z,
+                   &otherPlayer.position.x, &otherPlayer.position.y, &otherPlayer.position.z, &server_time, &data[0], &data[1], &data[2], &data[3], &data[4], &data[5]);
             dataReceived += bytesRead;
             frameCount++;
         }
@@ -363,7 +363,7 @@ int main() {
         );
         DrawArena();
         DrawThing(server_time);
-        DrawBrownian(data[0], data[1]);
+        DrawBrownian(data);
         //DrawPicture();
         EndMode3D();
 
