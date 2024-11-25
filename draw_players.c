@@ -27,7 +27,7 @@ void DrawPlayers(
     Vector3 position2 = { x1, y1 - PLAYER_HEIGHT + 0.2f, z1 };
 
     // Player 1
-    DrawSinglePlayer(position1, animIndex1, animFrame1, id1 ? RED : PINK);
+    DrawSinglePlayer(position1, animIndex1, animFrame1, id1 ? RED : ORANGE);
 
     // Player 2
     DrawSinglePlayer(position2, animIndex2, animFrame2, YELLOW);

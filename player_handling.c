@@ -129,7 +129,8 @@ void HandlePlayerMovement(
     Vector3 proposedPosition = {
         player->position.x + moveDirection->x,
         player->position.y,
-        player->position.z + moveDirection->z
+        player->position.z + moveDirection->z,
+        player->yaw = 90.0f
     };
 
     if (!Walls(proposedPosition.x, player->position.y, player->position.z)) {
