@@ -92,14 +92,22 @@ void *handle_client(void *arg) {
 
         current_time = get_epoch_time_in_milliseconds() - time_ref;
 
-        printf("%lf  %f  %f\n", current_time, data[6], data[7]);
+        //printf("%lf  %f  %f\n", current_time, data[6], data[7]);
 
         pthread_mutex_lock(&playerMutex);
         sscanf(buffer, "%f %f %f %f %f %f", &playerData[player_id].x, &playerData[player_id].y, &playerData[player_id].z,  &playerData[1 - player_id].x, &playerData[1 - player_id].y, &playerData[1 - player_id].z);
         pthread_mutex_unlock(&playerMutex);
 
         snprintf(buffer, BUFFER_SIZE, "%d %f %f %f %f %f %f %lf %f %f %f %f %f %f", player_id, playerData[player_id].x, playerData[player_id].y, playerData[player_id].z, playerData[1 - player_id].x, playerData[1 - player_id].y, playerData[1 - player_id].z, current_time, data[0], data[1], data[2], data[3], data[4], data[5]);
+
+        for (int i = 0; i < 2; i++) {
+            char temp[32];
+            snprintf(temp, sizeof(temp), " %f", data[i + 6]);
+            strncat(buffer, temp, BUFFER_SIZE - strlen(buffer) - 1);
+        }
+
         send(clientSocket, buffer, strlen(buffer), 0);
+        printf("%s\n", buffer);
     }
 
     close(clientSocket);

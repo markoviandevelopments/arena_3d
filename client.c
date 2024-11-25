@@ -160,12 +160,42 @@ int main() {
         ssize_t bytesRead = recv(clientSocket, buffer, BUFFER_SIZE - 1, 0);
         if (bytesRead > 0) {
             buffer[bytesRead] = '\0';
-            sscanf(buffer, "%d %f %f %f %f %f %f %lf %f %f %f %f %f %f", &player_id, &player.position.x, &player.position.y, &player.position.z,
-                   &otherPlayer.position.x, &otherPlayer.position.y, &otherPlayer.position.z, &server_time, &data[0], &data[1], &data[2], &data[3], &data[4], &data[5]);
+            // Parse the fixed part of the message
+            sscanf(buffer, "%d %f %f %f %f %f %f %lf",
+                             &player_id,
+                             &player.position.x, &player.position.y, &player.position.z,
+                             &otherPlayer.position.x, &otherPlayer.position.y, &otherPlayer.position.z,
+                             &server_time);
+
+
+            // Parse the dynamic `data` part of the message
+            char *dynamicPart = buffer;
+            for (int i = 0; i < 8; i++) {  // Skip fixed part
+                dynamicPart = strchr(dynamicPart, ' ');
+                if (dynamicPart) {
+                    dynamicPart++;
+                }
+            }
+
+            int dataIndex = 0;
+            while (dynamicPart && dataIndex < 7) {
+                if (sscanf(dynamicPart, "%f", &data[dataIndex]) == 1) {
+                    dataIndex++;
+                }
+                dynamicPart = strchr(dynamicPart, ' ');
+                if (dynamicPart) {
+                    dynamicPart++;
+                }
+            }
+
+            if (dataIndex != 7) {
+                fprintf(stderr, "Error: Could not parse all data elements from server message.\n");
+            }
+
+            // Increment data stats for debugging
             dataReceived += bytesRead;
             frameCount++;
         }
-
         printf("%s\n", buffer);
 
         // Update frequency and average bits per second
