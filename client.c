@@ -11,7 +11,7 @@
 
 #include "include/fox_animation.h"
 #include "include/player_handling.h"
-#include "include/game_constants.h"
+#include "game.h"
 
 float animFramePlayer1 = 0.0f;
 float animFramePlayer2 = 0.0f;

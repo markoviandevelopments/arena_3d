@@ -1,5 +1,5 @@
 #include "game.h"
-#include "include/game_constants.h"
+#include "game.h"
 #include "raylib.h"
 
 extern Model foxModel;

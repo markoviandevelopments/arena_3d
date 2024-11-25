@@ -1,5 +1,5 @@
 #include "include/player_handling.h"
-#include "include/game_constants.h"
+#include "game.h"
 
 #include <math.h>
 

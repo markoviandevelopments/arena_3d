@@ -9,6 +9,10 @@
 #include <stdlib.h>
 
 // Constants
+#define MOVE_SPEED 5.0f     // Movement speed
+#define TURN_SPEED 170.0f   // Turn speed in degrees per second
+#define GRAVITY -9.8f       // Gravity
+#define PLAYER_HEIGHT 1.0f  // Player height for grounding
 #define BOARD_SIZE 64
 #define SQUARE_SIZE 2.0f
 #define PORT 12346
