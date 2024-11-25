@@ -367,7 +367,7 @@ int main() {
         //DrawPicture();
         EndMode3D();
 
-        Color text_color = BLACK;
+        Color text_color = ORANGE;
 
         DrawText("Move with WASD, look with arrow keys, jump with SPACE", 10, 10, 20, text_color);
         DrawText(TextFormat("Frequency: %.2f Hz", frequency), 10, 40, 20, text_color);
