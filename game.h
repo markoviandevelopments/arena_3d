@@ -13,7 +13,6 @@
 #define SQUARE_SIZE 2.0f
 #define PORT 12346
 #define BUFFER_SIZE 256
-#define PLAYER_HEIGHT 1.6f
 #define SERVER_IP "50.188.120.138"
 
 extern Model foxModel;              // Declare the global fox model

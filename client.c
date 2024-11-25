@@ -9,35 +9,9 @@
 #include "raylib.h"
 #include "raymath.h"
 
-
-#define MOVE_SPEED 5.0f     // Movement speed
-#define TURN_SPEED 170.0f   // Turn speed in degrees per second
-#define GRAVITY -9.8f       // Gravity
-
-typedef struct {
-    Vector3 position;
-    float velocityY;
-    bool isGrounded;
-    float yaw;    // Horizontal angle
-    float pitch;  // Vertical angle
-} Player;
-
-typedef struct {
-    Vector3 position;
-    int id;
-} OtherPlayer;
-
-// Globals
-Model foxModel;
-ModelAnimation *animations;
-int animCount = 0;
-float animFrame = 0.0f;
-
-// Globals for animation states
-int currentAnimation = 0; // Default to Idle animation
-int idleAnimation = 0;    // Animation index for Idle
-int walkAnimation = 1;    // Animation index for Walk
-int runAnimation = 2;     // Animation index for Run
+#include "include/fox_animation.h"
+#include "include/player_handling.h"
+#include "include/game_constants.h"
 
 float animFramePlayer1 = 0.0f;
 float animFramePlayer2 = 0.0f;
@@ -67,8 +41,7 @@ int main() {
     bool isRunningPlayer2 = false;
     bool isWalkingPlayer2 = false;
 
-    float animationSpeed = 30.0f; // Adjust this value based on the desired speed
-
+    float animationSpeed = 40.0f; // Adjust this value based on the desired speed
 
     if (clientSocket < 0) {
         perror("Socket creation failed");
@@ -92,24 +65,17 @@ int main() {
     InitWindow(800, 600, "Chessboard POV");
     SetTargetFPS(60);
 
-    // Load the fox model and animations
-    foxModel = LoadModel("models/Fox.glb");
-    animations = LoadModelAnimations("models/Fox.glb", &animCount);
-    printf("Animation count: %d\n", animCount);
-    if (foxModel.meshCount == 0) {
-        printf("Failed to load fox model!\n");
+    LoadFoxAnimations("models/Fox.glb");
+    if (animCount == 0) {
         CloseWindow();
         return EXIT_FAILURE;
     }
-    if (animCount == 0) {
-        printf("No animations found in fox model!\n");
-    } else {
-        animFrame = 0.0f; // Initialize animation frame to 0
-    }
+
 
 
     // Initialize player
-    Player player = { .position = { 0.0f, 1.0f, 0.0f }, .velocityY = 0.0f, .isGrounded = false, .yaw = 0.0f, .pitch = 0.0f };
+    Player player;
+    InitializePlayer(&player, (Vector3){ 0.0f, 1.0f, 0.0f });
     OtherPlayer otherPlayer = { .position = { 2.0f, 1.0f, 2.0f } };
 
     // Initialize camera
@@ -128,67 +94,49 @@ int main() {
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
 
- //       if (fabs(moveDirection.x) > 0.0f || fabs(moveDirection.z) > 0.0f) {
- //           isMoving = true;
- //           if (IsKeyDown(KEY_E)) { // Example key for running
-//                isRunning = true;
-//            }
-//        }
+        Vector3 moveDirection = { 0.0f, 0.0f, 0.0f };
+        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, &moveDirection);
 
-        // Switch animations based on movement state
-        if (isRunning) {
-            if (currentAnimation != runAnimation) {
-                currentAnimation = runAnimation;
-                animFrame = 0; // Reset frame when switching animations
-            }
-        } else if (isMoving) {
-            if (currentAnimation != walkAnimation) {
-                currentAnimation = walkAnimation;
-                animFrame = 0; // Reset frame when switching animations
-            }
+        isMoving = isWalkingPlayer1 || isRunningPlayer1;
+        isRunning = isRunningPlayer1;
+
+        // Apply movement to the player's position with wall collision check
+        ApplyGravity(&player, deltaTime);
+        
+        // Apply movement to the player's position with wall collision check
+        if (!Walls(player.position.x + moveDirection.x, player.position.y, player.position.z)) {
+            player.position.x += moveDirection.x;
         } else {
-            if (currentAnimation != idleAnimation) {
-                currentAnimation = idleAnimation;
-                animFrame = 0; // Reset frame when switching animations
-            }
+            moveDirection.x = 0.0f; // Stop movement along x-axis
+        }
+
+        if (!Walls(player.position.x, player.position.y, player.position.z + moveDirection.z)) {
+            player.position.z += moveDirection.z;
+        } else {
+            moveDirection.z = 0.0f; // Stop movement along z-axis
         }
 
         // Update animation
-        if (animCount > 0) {
-            animFrame += deltaTime * 30.0f; // Adjust speed for animations
-            if (animFrame >= animations[currentAnimation].frameCount) animFrame = 0;
-            UpdateModelAnimation(foxModel, animations[currentAnimation], (int)animFrame);
-        }
+        UpdateFoxAnimation(deltaTime, isMoving, isRunning);
 
-        // Apply gravity if not grounded
-        if (!player.isGrounded) {
-            player.velocityY += GRAVITY * deltaTime;
-        }
-
-        //Check for other grounds
-        if (Grounds(player.position.x, player.position.y, player.position.z) && !is_jumping) {
-            player.velocityY = 0.0f;
-        }
-
+        UpdatePlayerCamera(&camera, &player, deltaTime);
 
         // Update player's vertical position
-        player.position.y += player.velocityY * deltaTime;
-
-        // Check if the player is grounded (on the chessboard)
-        if (player.position.y <= PLAYER_HEIGHT) {
-            player.position.y = PLAYER_HEIGHT;
-            player.velocityY = 0.0f;
-            player.isGrounded = true;
-        } else {
-            player.isGrounded = false;
-        }
+        // player.position.y += player.velocityY * deltaTime;
 
         // Determine animation state for Player 1
         int animIndex1 = idleAnimation; // Default to idle
+        int animIndex2 = idleAnimation; // Default to idle for the other player
         if (isRunningPlayer1) {
             animIndex1 = runAnimation;
         } else if (isWalkingPlayer1) {
             animIndex1 = walkAnimation;
+        }
+
+        if (isRunningPlayer2) {
+            animIndex2 = runAnimation;
+        } else if (isWalkingPlayer2) {
+            animIndex2 = walkAnimation;
         }
 
         // Update animation frame
@@ -197,13 +145,10 @@ int main() {
             animFramePlayer1 = 0; // Loop the animation
         }
 
-        // Jump
-        if (IsKeyPressed(KEY_SPACE) && (player.isGrounded || Ladders(player.position.x, player.position.y, player.position.z) || Grounds(player.position.x, player.position.y, player.position.z)) ) {
-            player.velocityY = 5.0f;
-            player.isGrounded = false;
-            is_jumping = true;
-        } else {
-            is_jumping = false;
+        // Update animation frame
+        animFramePlayer2 += deltaTime * animationSpeed;
+        if (animFramePlayer2 >= animations[animIndex1].frameCount) {
+            animFramePlayer2 = 0; // Loop the animation
         }
 
 
@@ -222,77 +167,6 @@ int main() {
             snprintf(command, sizeof(command), "mv %s screenshots/", filename_string);
             system(command);
         }
-
-        // Handle camera/player rotation with consistent direction
-        if (IsKeyDown(KEY_LEFT)) player.yaw -= TURN_SPEED * deltaTime; // Rotate left
-        if (IsKeyDown(KEY_RIGHT)) player.yaw += TURN_SPEED * deltaTime; // Rotate right
-        if (IsKeyDown(KEY_UP)) player.pitch -= TURN_SPEED * deltaTime;
-        if (IsKeyDown(KEY_DOWN)) player.pitch += TURN_SPEED * deltaTime;
-
-        // Limit pitch to avoid flipping
-        if (player.pitch > 89.0f) player.pitch = 89.0f;
-        if (player.pitch < -89.0f) player.pitch = -89.0f;
-
-        // Reset movement flags
-        isWalkingPlayer1 = false;
-        isRunningPlayer1 = false;
-
-        Vector3 moveDirection = { 0.0f, 0.0f, 0.0f };
-
-        // Handle movement (relative to player's yaw)
-        if (IsKeyDown(KEY_W)) { // Move forward
-            moveDirection.x += cos(DEG2RAD * player.yaw) * MOVE_SPEED * deltaTime;
-            moveDirection.z += sin(DEG2RAD * player.yaw) * MOVE_SPEED * deltaTime;
-            isWalkingPlayer1 = true; // Player is walking
-        }
-        if (IsKeyDown(KEY_S)) { // Move backward
-            moveDirection.x -= cos(DEG2RAD * player.yaw) * MOVE_SPEED * deltaTime;
-            moveDirection.z -= sin(DEG2RAD * player.yaw) * MOVE_SPEED * deltaTime;
-            isWalkingPlayer1 = true;
-        }
-        if (IsKeyDown(KEY_E)) {
-            moveDirection.x += 3.0f * cos(DEG2RAD * player.yaw) * MOVE_SPEED * deltaTime;
-            moveDirection.z += 3.0f * sin(DEG2RAD * player.yaw) * MOVE_SPEED * deltaTime;
-            isRunningPlayer1 = true; // Player is running
-            isWalkingPlayer1 = false; // Override walking state if running
-        }
-        if (IsKeyDown(KEY_A)) { // Strafe left
-            moveDirection.x += cos(DEG2RAD * (player.yaw - 90)) * MOVE_SPEED * deltaTime;
-            moveDirection.z += sin(DEG2RAD * (player.yaw - 90)) * MOVE_SPEED * deltaTime;
-            isWalkingPlayer1 = true;
-        }
-        if (IsKeyDown(KEY_D)) { // Strafe right
-            moveDirection.x += cos(DEG2RAD * (player.yaw + 90)) * MOVE_SPEED * deltaTime;
-            moveDirection.z += sin(DEG2RAD * (player.yaw + 90)) * MOVE_SPEED * deltaTime;
-            isWalkingPlayer1 = true;
-        }
-
-        // Apply movement to the player's position
-        if (!Walls(player.position.x + moveDirection.x, player.position.y, player.position.z + moveDirection.z)) {
-            player.position.x += moveDirection.x;
-            player.position.z += moveDirection.z;
-        }
-
-        // Calculate the forward direction based on the player's yaw
-        Vector3 forward = {
-            cos(DEG2RAD * player.yaw),
-            0.0f,
-            sin(DEG2RAD * player.yaw)
-        };
-
-        // Update the camera's position (slightly behind and above the player)
-        camera.position = (Vector3){
-            player.position.x - forward.x * 10.0f, // Move the camera back along the forward direction
-            player.position.y + 3.0f,              // Slightly above the player
-            player.position.z - forward.z * 10.0f  // Move the camera back along the forward direction
-        };
-
-        // Update the camera's target to point in front of the player
-        camera.target = (Vector3){
-            player.position.x + forward.x,
-            player.position.y + 1.0f, // Focus on the player's head height
-            player.position.z + forward.z
-        };
 
         // Send player position to server
         char buffer[BUFFER_SIZE];
@@ -324,22 +198,6 @@ int main() {
 
             // printf("Frequency: %.2f Hz, Avg bits/s: %.2f\n", frequency, avgBitsPerSecond);
         }
-
-        // Determine animation state for Player 1
-        if (isRunningPlayer1) animIndex1 = runAnimation;
-        else if (isWalkingPlayer1) animIndex1 = walkAnimation;
-
-        // Determine animation state for Player 2
-        int animIndex2 = 0; // Default to idle animation
-        if (isRunningPlayer2) animIndex2 = runAnimation;
-        else if (isWalkingPlayer2) animIndex2 = walkAnimation;
-
-        // Calculate rotation and translation matrix
-        Matrix rotationMatrix = MatrixRotateY(DEG2RAD * player.yaw); // Rotate the model based on yaw
-        Matrix translationMatrix = MatrixTranslate(player.position.x, player.position.y, player.position.z);
-
-        // Apply combined transformation to the model
-        foxModel.transform = MatrixMultiply(rotationMatrix, translationMatrix);
 
         // Render frame
         BeginDrawing();
@@ -377,9 +235,7 @@ int main() {
         DrawText(TextFormat("Agent 1 Score: %.2f  Agent 2 Score: %.2f", data[2], data[5]), 10, 150, 20, text_color);
         EndDrawing();
     }
-
-    UnloadModel(foxModel);
-    if (animCount > 0) UnloadModelAnimations(animations, animCount);
+    UnloadFoxAnimations();
 
     CloseWindow();
     close(clientSocket);
