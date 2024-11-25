@@ -92,7 +92,7 @@ void *handle_client(void *arg) {
 
         current_time = get_epoch_time_in_milliseconds() - time_ref;
 
-        printf("%lf\n", current_time);
+        printf("%lf  %f  %f\n", current_time, data[6], data[7]);
 
         pthread_mutex_lock(&playerMutex);
         sscanf(buffer, "%f %f %f %f %f %f", &playerData[player_id].x, &playerData[player_id].y, &playerData[player_id].z,  &playerData[1 - player_id].x, &playerData[1 - player_id].y, &playerData[1 - player_id].z);
