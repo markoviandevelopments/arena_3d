@@ -44,6 +44,8 @@ float animFramePlayer2 = 0.0f;
 
 double server_time;
 
+float data[10] = {0.0f, -40.0f, 0.0f};
+
 int main() {
 
     // Networking variables
@@ -302,8 +304,8 @@ int main() {
         ssize_t bytesRead = recv(clientSocket, buffer, BUFFER_SIZE - 1, 0);
         if (bytesRead > 0) {
             buffer[bytesRead] = '\0';
-            sscanf(buffer, "%d %f %f %f %f %f %f %lf", &player_id, &player.position.x, &player.position.y, &player.position.z,
-                   &otherPlayer.position.x, &otherPlayer.position.y, &otherPlayer.position.z, &server_time);
+            sscanf(buffer, "%d %f %f %f %f %f %f %lf %f %f", &player_id, &player.position.x, &player.position.y, &player.position.z,
+                   &otherPlayer.position.x, &otherPlayer.position.y, &otherPlayer.position.z, &server_time, &data[0], &data[1]);
             dataReceived += bytesRead;
             frameCount++;
         }
@@ -361,6 +363,7 @@ int main() {
         );
         DrawArena();
         DrawThing(server_time);
+        DrawBrownian(data[0], data[1]);
         //DrawPicture();
         EndMode3D();
 

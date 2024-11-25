@@ -6,6 +6,7 @@
 #include <stddef.h>
 #include <time.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 // Constants
 #define BOARD_SIZE 64
@@ -33,5 +34,7 @@ int Ladders(float x, float y, float z);
 int Grounds(float x, float y, float z);
 int Walls(float x, float y, float z);
 void DrawPicture();
+void AlterBrownian(float *data);
+void DrawBrownian(float x, float z);
 
 #endif

@@ -24,8 +24,10 @@ typedef struct {
 Player playerData [2] = {{ .id = 0, .x = 0.0f, .y = 0.0f, .z = 0.0f }, { .id = 1, .x = 0.0f, .y = 0.0f, .z = 0.0f }};
 int nextPlayerId = 0;
 
-pthread_mutex_t playerMutex = PTHREAD_MUTEX_INITIALIZER;
+float data[10] = {0.0f, -40.0f, 0.0f};
 
+pthread_mutex_t playerMutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t dataMutex = PTHREAD_MUTEX_INITIALIZER;
 
 
 double get_epoch_time_in_milliseconds() {
@@ -47,6 +49,29 @@ double get_epoch_time_in_milliseconds() {
 
 double time_ref;
 double current_time;
+
+
+
+
+// Thread function to update the data array
+void *update_data_thread(void *arg) {
+    (void)arg;
+    while (1) {
+        pthread_mutex_lock(&dataMutex);
+
+        AlterBrownian(data); // Call the external function to update the data
+
+        pthread_mutex_unlock(&dataMutex);
+
+        struct timespec ts;
+        ts.tv_sec = 0;
+        ts.tv_nsec = 10000000; // 10ms
+        nanosleep(&ts, NULL);
+
+    }
+    return NULL;
+}
+
 
 
 void *handle_client(void *arg) {
@@ -73,7 +98,7 @@ void *handle_client(void *arg) {
         sscanf(buffer, "%f %f %f %f %f %f", &playerData[player_id].x, &playerData[player_id].y, &playerData[player_id].z,  &playerData[1 - player_id].x, &playerData[1 - player_id].y, &playerData[1 - player_id].z);
         pthread_mutex_unlock(&playerMutex);
 
-        snprintf(buffer, BUFFER_SIZE, "%d %f %f %f %f %f %f %lf", player_id, playerData[player_id].x, playerData[player_id].y, playerData[player_id].z, playerData[1 - player_id].x, playerData[1 - player_id].y, playerData[1 - player_id].z, current_time);
+        snprintf(buffer, BUFFER_SIZE, "%d %f %f %f %f %f %f %lf %f %f", player_id, playerData[player_id].x, playerData[player_id].y, playerData[player_id].z, playerData[1 - player_id].x, playerData[1 - player_id].y, playerData[1 - player_id].z, current_time, data[0], data[1]);
         send(clientSocket, buffer, strlen(buffer), 0);
     }
 
@@ -109,6 +134,13 @@ int main() {
 
     printf("Server listening on port %d...\n", PORT);
 
+    // Start the data update thread
+    pthread_t dataThread;
+    if (pthread_create(&dataThread, NULL, update_data_thread, NULL) != 0) {
+        perror("Failed to create data update thread");
+        close(serverSocket);
+        return EXIT_FAILURE;
+    }
 
     while (1) {
         struct sockaddr_in clientAddress;

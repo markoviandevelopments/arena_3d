@@ -4,8 +4,8 @@ CFLAGS = -Wall -Wextra -std=c99 -pedantic
 LDFLAGS = -lraylib -lm -pthread
 
 # Source files
-SERVER_SRC = server.c
-CLIENT_SRC = client.c draw_chessboard.c draw_players.c draw_thing.c draw_arena.c ladders.c grounds.c walls.c draw_picture.c
+SERVER_SRC = server.c alter_brownian.c
+CLIENT_SRC = client.c draw_chessboard.c draw_players.c draw_thing.c draw_arena.c ladders.c grounds.c walls.c draw_picture.c draw_brownian.c
 COMMON_HEADER = game.h
 
 # Output binaries
