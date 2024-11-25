@@ -24,7 +24,7 @@ typedef struct {
 Player playerData [2] = {{ .id = 0, .x = 0.0f, .y = 0.0f, .z = 0.0f }, { .id = 1, .x = 0.0f, .y = 0.0f, .z = 0.0f }};
 int nextPlayerId = 0;
 
-float data[10] = {0.0f, -40.0f, 1.0f, 0.0f, -40.0f, 1.0f}; // x-pos, z-pos, food ...
+float data[10] = {0.0f, -40.0f, 1.0f, 0.0f, -40.0f, 1.0f, 0.7f, 1.6f}; // (x-pos, z-pos, food ... x2), agent 1 angle, agent 2 angle
 
 pthread_mutex_t playerMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t dataMutex = PTHREAD_MUTEX_INITIALIZER;
