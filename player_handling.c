@@ -46,7 +46,10 @@ void InitializePlayer(Player *player, Vector3 startPosition) {
 }
 
 // Handle player movement and input
-void HandlePlayerMovement(Player *player, float deltaTime, bool *isWalking, bool *isRunning, bool *isJumping, Vector3 *moveDirection) {
+void HandlePlayerMovement(
+    Player *player, float deltaTime, bool *isWalking, bool *isRunning,
+    bool *isJumping, Vector3 *moveDirection, int (*Walls)(float, float, float)
+) {
     *isWalking = false;
     *isRunning = false;
     *moveDirection = (Vector3){ 0.0f, 0.0f, 0.0f }; // Reset moveDirection
@@ -88,9 +91,24 @@ void HandlePlayerMovement(Player *player, float deltaTime, bool *isWalking, bool
         *isJumping = false;
     }
 
-    // Apply movement
-    player->position.x += moveDirection->x;
-    player->position.z += moveDirection->z;
+    // Collision handling using proposed position
+    Vector3 proposedPosition = {
+        player->position.x + moveDirection->x,
+        player->position.y,
+        player->position.z + moveDirection->z
+    };
+
+    if (!Walls(proposedPosition.x, player->position.y, player->position.z)) {
+        player->position.x = proposedPosition.x; // Apply X movement
+    } else {
+        moveDirection->x = 0.0f; // Stop X movement
+    }
+
+    if (!Walls(player->position.x, player->position.y, proposedPosition.z)) {
+        player->position.z = proposedPosition.z; // Apply Z movement
+    } else {
+        moveDirection->z = 0.0f; // Stop Z movement
+    }
 }
 
 // Apply gravity to the player

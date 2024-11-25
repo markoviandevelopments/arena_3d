@@ -71,8 +71,6 @@ int main() {
         return EXIT_FAILURE;
     }
 
-
-
     // Initialize player
     Player player;
     InitializePlayer(&player, (Vector3){ 0.0f, 1.0f, 0.0f });
@@ -94,27 +92,14 @@ int main() {
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
 
-        Vector3 moveDirection = { 0.0f, 0.0f, 0.0f };
-        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, &moveDirection);
+        Vector3 moveDirection = {0.0f, 0.0f, 0.0f};
+        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, &moveDirection, Walls);
 
         isMoving = isWalkingPlayer1 || isRunningPlayer1;
         isRunning = isRunningPlayer1;
 
         // Apply movement to the player's position with wall collision check
         ApplyGravity(&player, deltaTime);
-        
-        // Apply movement to the player's position with wall collision check
-        if (!Walls(player.position.x + moveDirection.x, player.position.y, player.position.z)) {
-            player.position.x += moveDirection.x;
-        } else {
-            moveDirection.x = 0.0f; // Stop movement along x-axis
-        }
-
-        if (!Walls(player.position.x, player.position.y, player.position.z + moveDirection.z)) {
-            player.position.z += moveDirection.z;
-        } else {
-            moveDirection.z = 0.0f; // Stop movement along z-axis
-        }
 
         // Update animation
         UpdateFoxAnimation(deltaTime, isMoving, isRunning);
