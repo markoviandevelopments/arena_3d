@@ -25,11 +25,11 @@ void AlterBrownian(float *data) {
     data[5] *= 0.9999f;
 
 
-    if (data[2] > 2.0f * data[5]) {
+    if (data[2] > data[5] && rand() % 300 == 0) {
         data[7] = data[6] + ((rand() % 1000) / 1000.0 - 0.5f) * 2.0f * pow(2, rand() % 10 - 10);
         data[5] = data[2];
     }
-    if (data[5] > 2.0f * data[2]) {
+    if (data[5] > data[2] && rand() % 300 == 0) {
         data[6] = data[7] + ((rand() % 1000) / 1000.0 - 0.5f) * 2.0f * pow(2, rand() % 10 - 10);
         data[2] = data[5];
     }
