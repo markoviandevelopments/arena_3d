@@ -93,7 +93,7 @@ int main() {
         float deltaTime = GetFrameTime();
 
         Vector3 moveDirection = {0.0f, 0.0f, 0.0f};
-        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, &moveDirection, Walls);
+        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, &moveDirection, Walls, Ladders);
 
         isMoving = isWalkingPlayer1 || isRunningPlayer1;
         isRunning = isRunningPlayer1;
@@ -105,9 +105,6 @@ int main() {
         UpdateFoxAnimation(deltaTime, isMoving, isRunning);
 
         UpdatePlayerCamera(&camera, &player, deltaTime);
-
-        // Update player's vertical position
-        // player.position.y += player.velocityY * deltaTime;
 
         // Determine animation state for Player 1
         int animIndex1 = idleAnimation; // Default to idle

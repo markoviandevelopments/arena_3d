@@ -48,11 +48,14 @@ void InitializePlayer(Player *player, Vector3 startPosition) {
 // Handle player movement and input
 void HandlePlayerMovement(
     Player *player, float deltaTime, bool *isWalking, bool *isRunning,
-    bool *isJumping, Vector3 *moveDirection, int (*Walls)(float, float, float)
+    bool *isJumping, Vector3 *moveDirection, int (*Walls)(float, float, float),
+    int (*Ladders)(float, float, float) // Pass the ladder check function
 ) {
     *isWalking = false;
     *isRunning = false;
     *moveDirection = (Vector3){ 0.0f, 0.0f, 0.0f }; // Reset moveDirection
+
+    player->isOnLadder = Ladders(player->position.x, player->position.y, player->position.z);
 
     // Movement input handling
     if (IsKeyDown(KEY_W)) { // Move forward
@@ -82,8 +85,21 @@ void HandlePlayerMovement(
         *isWalking = true;
     }
 
-    // Jumping
-    if (IsKeyPressed(KEY_SPACE) && player->isGrounded) {
+    // Smooth ladder climbing
+    if (player->isOnLadder) {
+        if (IsKeyDown(KEY_SPACE)) { // Move up the ladder smoothly
+            player->position.y += MOVE_SPEED * deltaTime * 2.0f; // Adjust the speed for a smooth climb
+            player->velocityY = 0.0f; // Disable gravity while climbing
+        }
+        if (IsKeyDown(KEY_S)) { // Allow moving down the ladder
+            player->position.y -= MOVE_SPEED * deltaTime * 2.0f; // Move down smoothly
+            player->velocityY = 0.0f; // Disable gravity while descending
+        }
+        player->isGrounded = false; // Disable grounded state while on a ladder
+    }
+
+    // Jumping (only if not on a ladder)
+    if (IsKeyPressed(KEY_SPACE) && player->isGrounded && !player->isOnLadder) {
         player->velocityY = 5.0f;
         player->isGrounded = false;
         *isJumping = true;
@@ -113,17 +129,26 @@ void HandlePlayerMovement(
 
 // Apply gravity to the player
 void ApplyGravity(Player *player, float deltaTime) {
-    if (!player->isGrounded) {
+    if (!player->isGrounded && !player->isOnLadder) {
         player->velocityY += GRAVITY * deltaTime;
     }
-    player->position.y += player->velocityY * deltaTime;
 
-    // Simulate ground collision
+    if (!player->isOnLadder) { // Disable gravity effect on a ladder
+        player->position.y += player->velocityY * deltaTime;
+    }
+
+    // Simulate ground or roof collision
     if (player->position.y <= PLAYER_HEIGHT) {
+        // Regular ground level
         player->position.y = PLAYER_HEIGHT;
         player->velocityY = 0.0f;
         player->isGrounded = true;
+    } else if (Grounds(player->position.x, player->position.y, player->position.z)) {
+        // Roof level: Acceptable if it matches the roof's bounds
+        player->velocityY = 0.0f;
+        player->isGrounded = true;
     } else {
+        // Not grounded
         player->isGrounded = false;
     }
 }
