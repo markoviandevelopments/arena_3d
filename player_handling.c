@@ -111,12 +111,18 @@ void HandlePlayerMovement(
     }
 
     // Jumping (only if not on a ladder)
-    if (IsKeyPressed(KEY_SPACE) && player->isGrounded && !player->isOnLadder) {
+    if (IsKeyPressed(KEY_SPACE) && (player->isGrounded || Grounds(player->position.x, player->position.y - 0.1f, player->position.z) ) && !player->isOnLadder) {
         player->velocityY = 5.0f;
         player->isGrounded = false;
         *isJumping = true;
     } else {
         *isJumping = false;
+    }
+
+    if (player->position.y < -20.0f) {
+        player->position.x = 0.0f;
+        player->position.z = 0.0f;
+        player->position.y = 5.0f;
     }
 
     // Collision handling using proposed position
@@ -142,7 +148,7 @@ void HandlePlayerMovement(
 
 // Apply gravity to the player
 void ApplyGravity(Player *player, float deltaTime) {
-    if (!player->isGrounded && !player->isOnLadder) {
+    if ((!player->isGrounded && !Grounds(player->position.x, player->position.y - 0.1f, player->position.z)) && !player->isOnLadder) {
         player->velocityY += GRAVITY * deltaTime;
     }
 
@@ -150,15 +156,13 @@ void ApplyGravity(Player *player, float deltaTime) {
         player->position.y += player->velocityY * deltaTime;
     }
 
-    // Simulate ground or roof collision
-    if (player->position.y <= PLAYER_HEIGHT) {
-        // Regular ground level
-        player->position.y = PLAYER_HEIGHT;
-        player->velocityY = 0.0f;
-        player->isGrounded = true;
-    } else if (Grounds(player->position.x, player->position.y, player->position.z)) {
+    if (Grounds(player->position.x, player->position.y - 0.1f, player->position.z)) {
         // Roof level: Acceptable if it matches the roof's bounds
-        player->velocityY = 0.0f;
+        if (!Grounds(player->position.x, player->position.y, player->position.z)) {
+            player->velocityY = 0.00f;
+        } else {
+            player->velocityY = 0.05f;
+        }
         player->isGrounded = true;
     } else {
         // Not grounded

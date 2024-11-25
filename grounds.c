@@ -7,7 +7,11 @@ int Grounds(float x, float y, float z) {
     }
 
     // Regular ground level
-    if (y > 20.0f && y < 21.5f) {
+    if (y > 20.0f && y < 21.5f && x > -101.0f && x < 99.0f && z > -101.0f && z < 99.0f) {
+        return 1;
+    }
+
+    if (y < PLAYER_HEIGHT  && y < 21.5f && x > -101.0f && x < 99.0f && z > -101.0f && z < 99.0f) {
         return 1;
     }
 

@@ -13,7 +13,7 @@
 #define TURN_SPEED 170.0f   // Turn speed in degrees per second
 #define GRAVITY -9.8f       // Gravity
 #define PLAYER_HEIGHT 1.0f  // Player height for grounding
-#define BOARD_SIZE 64
+#define BOARD_SIZE 100
 #define SQUARE_SIZE 2.0f
 #define PORT 12346
 #define BUFFER_SIZE 256
