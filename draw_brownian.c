@@ -1,5 +1,7 @@
 #include "game.h"
 
+float width;
+
 void DrawBrownian(float *data) {
     Color squareColor = (Color){255, 255, 0, 200};
 
@@ -9,8 +11,10 @@ void DrawBrownian(float *data) {
         data[1]
     };
 
-    DrawCube(position, 0.6f, 0.55f, 0.6f, squareColor);
-    DrawCubeWires(position, 0.6f, 0.55f, 0.6f, BLACK);
+    width = 0.6f + data[2] / 100.0f;
+
+    DrawCube(position, width, 0.55f, width, squareColor);
+    DrawCubeWires(position, width, 0.55f, width, BLACK);
 
 
     Color square2Color = (Color){100, 100, 255, 200};
@@ -21,8 +25,11 @@ void DrawBrownian(float *data) {
         data[4]
     };
 
-    DrawCube(position2, 0.6f, 0.55f, 0.6f, square2Color);
-    DrawCubeWires(position2, 0.6f, 0.55f, 0.6f, BLACK);
+    width = 0.6f + data[5] / 100.0f;
+
+
+    DrawCube(position2, width, 0.55f, width, square2Color);
+    DrawCubeWires(position2, width, 0.55f, width, BLACK);
 
 
 

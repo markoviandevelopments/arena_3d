@@ -9,6 +9,7 @@ void AlterBrownian(float *data) {
     if (pow(pow((data[0] + dx) / 50.0f, 2) + pow((data[1] + dz + 40.0f) / 25.0f, 2), 0.5f) <= 1.0f) {
         data[0] += dx;
         data[1] += dz;
+        data[2] += pow(pow(dx, 2) + pow(dz, 2), 0.5f);
     }
 
 
@@ -18,6 +19,7 @@ void AlterBrownian(float *data) {
     if (pow(pow((data[0] + dx) / 50.0f, 2) + pow((data[1] + dz + 40.0f) / 25.0f, 2), 0.5f) <= 1.0f) {
         data[3] += dx;
         data[4] += dz;
+        data[5] += pow(pow(dx, 2) + pow(dz, 2), 0.5f);
     }
 
 
