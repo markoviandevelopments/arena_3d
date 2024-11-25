@@ -359,7 +359,7 @@ int main() {
         );
         DrawArena();
         DrawThing(server_time);
-        DrawPicture();
+        //DrawPicture();
         EndMode3D();
 
         Color text_color = BLACK;
