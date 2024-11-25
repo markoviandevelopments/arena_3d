@@ -33,6 +33,7 @@ void DrawPlayers(
 );
 void DrawThing(double server_time);
 void DrawArena();
+void DrawSecrethouse();
 int Ladders(float x, float y, float z);
 int Grounds(float x, float y, float z);
 int Walls(float x, float y, float z);

@@ -232,6 +232,7 @@ int main() {
             otherPlayer.position.x, otherPlayer.position.y, otherPlayer.position.z, animIndex2, animFramePlayer2
         );
         DrawArena();
+        DrawSecrethouse();
         DrawThing(server_time);
         DrawBrownian(data);
         //DrawPicture();
