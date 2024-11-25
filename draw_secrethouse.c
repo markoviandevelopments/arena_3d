@@ -27,7 +27,7 @@ void DrawSecrethouse() {
 
     // Update texture scaling factor
     Shader shader = model.materials[0].shader;
-    float textureScale = 5.0f; // Use a constant for testing
+    float textureScale = 1.0f; // Use a constant for testing
     SetShaderValue(shader, GetShaderLocation(shader, "textureScale"), &textureScale, SHADER_UNIFORM_FLOAT);
 
 
