@@ -266,8 +266,10 @@ int main() {
         }
 
         // Apply movement to the player's position
-        player.position.x += moveDirection.x;
-        player.position.z += moveDirection.z;
+        if (!Walls(player.position.x + moveDirection.x, player.position.y, player.position.z + moveDirection.z)) {
+            player.position.x += moveDirection.x;
+            player.position.z += moveDirection.z;
+        }
 
         // Calculate the forward direction based on the player's yaw
         Vector3 forward = {

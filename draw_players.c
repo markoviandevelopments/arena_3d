@@ -18,6 +18,20 @@ void DrawPlayers(
     }
     DrawModel(foxModel, position1, scale, id1 ? RED : BLUE);
 
+
+
+    Color squareColor = RED;
+
+    Vector3 position = {
+        x,
+        y,
+        z
+    };
+    DrawCube(position, 0.1f, 0.1f, 0.1f, squareColor);
+    DrawCubeWires(position, 0.1f, 0.1f, 0.1f, BLACK);
+
+
+
     // Player 2
     Vector3 position2 = { x1, y1 - PLAYER_HEIGHT + 0.2f, z1 };
     if (animCount > animIndex2) {
