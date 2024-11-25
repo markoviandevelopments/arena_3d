@@ -25,6 +25,8 @@ typedef struct {
 
 int player_id;
 
+double server_time;
+
 int main() {
     int clientSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (clientSocket < 0) {
@@ -67,6 +69,7 @@ int main() {
     float frequency = 0.0f;
     float avgBitsPerSecond = 0.0f;
     bool is_jumping = false;
+
 
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
@@ -180,7 +183,7 @@ int main() {
         ssize_t bytesRead = recv(clientSocket, buffer, BUFFER_SIZE - 1, 0);
         if (bytesRead > 0) {
             buffer[bytesRead] = '\0';
-            sscanf(buffer, "%d %f %f %f %f %f %f", &player_id, &player.position.x, &player.position.y, &player.position.z, &other_player.position.x, &other_player.position.y, &other_player.position.z);
+            sscanf(buffer, "%d %f %f %f %f %f %f %lf", &player_id, &player.position.x, &player.position.y, &player.position.z, &other_player.position.x, &other_player.position.y, &other_player.position.z, &server_time);
             dataReceived += bytesRead;
             frameCount++;
         }
@@ -211,7 +214,8 @@ int main() {
         DrawChessboard(BOARD_SIZE, SQUARE_SIZE);
         DrawPlayers(player_id, player.position.x, player.position.y, player.position.z, other_player.position.x, other_player.position.y, other_player.position.z);
         DrawArena();
-        DrawThing();
+        DrawThing(server_time);
+        DrawPicture();
         EndMode3D();
 
         Color text_color = BLACK;
@@ -220,7 +224,7 @@ int main() {
         DrawText(TextFormat("Frequency: %.2f Hz", frequency), 10, 40, 20, text_color);
         DrawText(TextFormat("Avg bits/s: %.2f", avgBitsPerSecond), 10, 70, 20, text_color);
         DrawText(TextFormat("ID: %d  X: %.2f  Y: %.2f  Z: %.2f", player_id, player.position.x, player.position.y, player.position.z), 10, 100, 20, text_color);
-        DrawText(TextFormat("Session Time: %.2f", GetTime()), 10, 130, 20, text_color);
+        DrawText(TextFormat("Session Time: %.2f  Server Time: %.2lf", GetTime(), server_time / 1000.0), 10, 130, 20, text_color);
         EndDrawing();
     }
 

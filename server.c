@@ -26,6 +26,29 @@ int nextPlayerId = 0;
 
 pthread_mutex_t playerMutex = PTHREAD_MUTEX_INITIALIZER;
 
+
+
+double get_epoch_time_in_milliseconds() {
+    struct timespec ts;
+
+    // Get the current time
+    if (clock_gettime(CLOCK_REALTIME, &ts) != 0) {
+        // Handle error
+        perror("clock_gettime");
+        return 0;
+    }
+
+    // Convert seconds and nanoseconds to milliseconds
+    double milliseconds = ts.tv_sec * 1000.0 + ts.tv_nsec / 1e6;
+
+    return milliseconds;
+}
+
+
+double time_ref;
+double current_time;
+
+
 void *handle_client(void *arg) {
     ClientInfo *clientInfo = (ClientInfo *)arg;
     int clientSocket = clientInfo->clientSocket;
@@ -42,11 +65,15 @@ void *handle_client(void *arg) {
         }
         buffer[bytesRead] = '\0';
 
+        current_time = get_epoch_time_in_milliseconds() - time_ref;
+
+        printf("%lf\n", current_time);
+
         pthread_mutex_lock(&playerMutex);
         sscanf(buffer, "%f %f %f %f %f %f", &playerData[player_id].x, &playerData[player_id].y, &playerData[player_id].z,  &playerData[1 - player_id].x, &playerData[1 - player_id].y, &playerData[1 - player_id].z);
         pthread_mutex_unlock(&playerMutex);
 
-        snprintf(buffer, BUFFER_SIZE, "%d %f %f %f %f %f %f", player_id, playerData[player_id].x, playerData[player_id].y, playerData[player_id].z, playerData[1 - player_id].x, playerData[1 - player_id].y, playerData[1 - player_id].z);
+        snprintf(buffer, BUFFER_SIZE, "%d %f %f %f %f %f %f %lf", player_id, playerData[player_id].x, playerData[player_id].y, playerData[player_id].z, playerData[1 - player_id].x, playerData[1 - player_id].y, playerData[1 - player_id].z, current_time);
         send(clientSocket, buffer, strlen(buffer), 0);
     }
 
@@ -55,6 +82,8 @@ void *handle_client(void *arg) {
 }
 
 int main() {
+    time_ref = get_epoch_time_in_milliseconds();
+    current_time = time_ref;
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (serverSocket < 0) {
         perror("Socket creation failed");
