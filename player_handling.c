@@ -6,34 +6,46 @@
 // Update the camera's position and handle rotation
 void UpdatePlayerCamera(Camera3D *camera, Player *player, float deltaTime) {
     // Handle camera/player rotation
-    if (IsKeyDown(KEY_LEFT)) player->yaw -= TURN_SPEED * deltaTime; // Rotate left
-    if (IsKeyDown(KEY_RIGHT)) player->yaw += TURN_SPEED * deltaTime; // Rotate right
-    if (IsKeyDown(KEY_UP)) player->pitch -= TURN_SPEED * deltaTime;
-    if (IsKeyDown(KEY_DOWN)) player->pitch += TURN_SPEED * deltaTime;
+    if (IsKeyDown(KEY_LEFT)) player->yaw -= TURN_SPEED * deltaTime;   // Rotate left
+    if (IsKeyDown(KEY_RIGHT)) player->yaw += TURN_SPEED * deltaTime;  // Rotate right
+    if (IsKeyDown(KEY_DOWN)) player->pitch -= TURN_SPEED * deltaTime;   // Look up
+    if (IsKeyDown(KEY_UP)) player->pitch += TURN_SPEED * deltaTime; // Look down
 
-    // Limit pitch to avoid flipping
+    // Clamp the pitch to avoid flipping
     if (player->pitch > 89.0f) player->pitch = 89.0f;
     if (player->pitch < -89.0f) player->pitch = -89.0f;
 
-    // Calculate forward vector based on yaw and pitch
+    // Define third-person parameters
+    const float THIRD_PERSON_DISTANCE = 10.0f; // Distance behind the player
+    const float THIRD_PERSON_HEIGHT = 3.0f;    // Height above the player
+
+    // Calculate the forward vector based on yaw and pitch
     Vector3 forward = {
         cos(DEG2RAD * player->yaw) * cos(DEG2RAD * player->pitch),
         sin(DEG2RAD * player->pitch),
         sin(DEG2RAD * player->yaw) * cos(DEG2RAD * player->pitch)
     };
 
-    // Update camera position and target
+    // Smoothly transition to first-person view when looking up
+    float pitchFactor = fabs(player->pitch) / 89.0f; // Scale between 0.0 and 1.0 based on pitch
+    float distanceFactor = 1.0f - pitchFactor;       // Inverse for smooth zoom-in effect
+
+    // Calculate the hybrid camera position
     camera->position = (Vector3){
-        player->position.x - forward.x * 10.0f, // Move back
-        player->position.y + 3.0f,             // Slightly above the player
-        player->position.z - forward.z * 10.0f  // Move back
+        player->position.x - forward.x * THIRD_PERSON_DISTANCE * distanceFactor,
+        player->position.y + THIRD_PERSON_HEIGHT * distanceFactor + 1.0f * pitchFactor, // Transition height
+        player->position.z - forward.z * THIRD_PERSON_DISTANCE * distanceFactor
     };
 
+    // Update the camera's target based on pitch and yaw
     camera->target = (Vector3){
         player->position.x + forward.x,
-        player->position.y + 1.0f, // Look at player's head height
+        player->position.y + forward.y + 1.0f, // Head height adjustment
         player->position.z + forward.z
     };
+
+    // Ensure the camera's up vector is stable
+    camera->up = (Vector3){ 0.0f, 1.0f, 0.0f };
 }
 
 // Initialize player properties
@@ -125,6 +137,7 @@ void HandlePlayerMovement(
     } else {
         moveDirection->z = 0.0f; // Stop Z movement
     }
+
 }
 
 // Apply gravity to the player
