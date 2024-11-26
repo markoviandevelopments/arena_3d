@@ -15,13 +15,14 @@ void AlterArrowpad(float *data, PlayerShort *playerData) {
 
         //printf("%f %f %f\n", playerData[i].x, playerData[i].y, playerData[i].z);
 
-        if (x > -14.0f && z > 14.0f && x < -11.0f && z < 17.0f) {
+
+        if (x > -14.0f && z > 14.0f && x < -11.0f && z < 17.0f && y < 2.0f && y > 0.0f) {
             arrow = 1;
-        } else if (x > -17.0f && z > 11.0f && x < -14.0f && z < 14.0f) {
+        } else if (x > -17.0f && z > 11.0f && x < -14.0f && z < 14.0f && y < 2.0f && y > 0.0f) {
             arrow = 2;
-        } else if (x > -20.0f && z > 14.0f && x < -17.0f && z < 17.0f) {
+        } else if (x > -20.0f && z > 14.0f && x < -17.0f && z < 17.0f && y < 2.0f && y > 0.0f) {
             arrow = 3;
-        } else if (x > -17.0f && z > 17.0f && x < -14.0f && z < 20.0f) {
+        } else if (x > -17.0f && z > 17.0f && x < -14.0f && z < 20.0f && y < 2.0f && y > 0.0f) {
             arrow = 4;
         }
 
