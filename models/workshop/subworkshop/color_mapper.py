@@ -141,7 +141,7 @@ def main():
     # Start the Pygame display in a separate thread
     display_thread = threading.Thread(
         target=display_image_with_highlights,
-        args=("mansion_map.png", matches_queue, stop_event),
+        args=("mansion1.png", matches_queue, stop_event),
         daemon=True
     )
     display_thread.start()
