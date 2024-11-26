@@ -1,5 +1,7 @@
+import threading
 import pygame
 from PIL import Image
+import sys
 
 # Define color palette with abbreviations
 COLOR_MAP = {
@@ -15,111 +17,161 @@ COLOR_MAP = {
     "GR": (128, 128, 128)  # Grey
 }
 
-def rotate_pattern(pattern):
-    """Generates all 4 rotations of a 3x3 pattern."""
-    rotations = [pattern]
-    for _ in range(3):
-        rotated = [list(reversed(col)) for col in zip(*rotations[-1])]
-        rotations.append(rotated)
-    return rotations
+def load_image_to_grid(image_path):
+    """Loads the image and converts it into a grid of colors."""
+    image = Image.open(image_path).convert('RGB')  # Ensure image is in RGB mode
+    pixels = image.load()
+    grid_size = 1024
+    grid = [[None for _ in range(grid_size)] for _ in range(grid_size)]
+    for x in range(grid_size):
+        for y in range(grid_size):
+            # Each block is 2x2 pixels
+            px = x * 2
+            py = y * 2
+            color = pixels[px, py]
+            grid[x][y] = color
+    return grid
 
-def match_pattern(image_pixels, x, y, pattern):
-    """Checks if a given pattern matches the image at block position (x, y)."""
-    for dx in range(3):  # over pattern blocks
-        for dy in range(3):
-            # Map block coordinates to pixel coordinates
-            px = (x + dx) * 2
-            py = (y + dy) * 2
-            if px + 1 >= 2048 or py + 1 >= 2048:  # Bounds check
-                return False
-            # Get the color in the block from the image
-            block_color = image_pixels[px, py]
-            # Compare the block color to the pattern color
-            if block_color != pattern[dx][dy]:
-                return False
-    return True
+def colors_match(color1, color2, tolerance=0):
+    """Checks if two colors match within a given tolerance."""
+    return all(abs(c1 - c2) <= tolerance for c1, c2 in zip(color1, color2))
 
-def get_user_colors():
-    """Prompts the user to input colors using abbreviations."""
-    print("\nEnter the 9 colors for the 3x3 pattern using these abbreviations:")
+def get_user_color():
+    """Prompts the user to input a color abbreviation."""
+    print("\nEnter a color using these abbreviations:")
     for abbr, color in COLOR_MAP.items():
         print(f"{abbr}: {color}")
-    colors = []
-    for i in range(9):
-        while True:
-            color_abbr = input(f"Enter color {i + 1} abbreviation: ").strip().upper()
-            if color_abbr in COLOR_MAP:
-                colors.append(COLOR_MAP[color_abbr])
-                break
-            else:
-                print("Invalid abbreviation. Try again.")
-    return colors
-
-def search_and_display_with_highlight(input_path="mansion_map.png"):
-    # Load the image
-    image = Image.open(input_path)
-    pixels = image.load()
-
     while True:
-        # Get the colors to search
-        colors_to_search = get_user_colors()
-        pattern = [colors_to_search[i:i + 3] for i in range(0, 9, 3)]
-        rotations = rotate_pattern(pattern)
-
-        # Search for the pattern in the image
-        found_coords = None
-        for x in range(1022):  # Iterate over blocks (0 to 1021)
-            for y in range(1022):
-                for rotated_pattern in rotations:
-                    if match_pattern(pixels, x, y, rotated_pattern):
-                        found_coords = (x + 1, y + 1)  # Center block position
-                        print(f"Pattern found at center block ({x + 1}, {y + 1})")
-                        break
-                if found_coords:
-                    break
-            if found_coords:
-                break
-
-        if not found_coords:
-            print("Pattern not found.")
+        color_abbr = input("Enter color abbreviation (or 'exit' to quit): ").strip().upper()
+        if color_abbr == 'EXIT':
+            return None
+        if color_abbr in COLOR_MAP:
+            return COLOR_MAP[color_abbr]
         else:
-            # Use Pygame to display the image with the highlight
-            pygame.init()
-            screen = pygame.display.set_mode((2048, 2048))
-            pygame.display.set_caption("Pattern Highlight")
+            print("Invalid abbreviation. Try again.")
 
-            # Convert the PIL image to a format usable by Pygame
-            mode = image.mode
-            size = image.size
-            data = image.tobytes()
-            pygame_image = pygame.image.fromstring(data, size, mode)
+def find_matching_sequences(grid, input_colors):
+    """Finds all sequences in the grid matching the input colors."""
+    grid_size = len(grid)
+    sequence_length = len(input_colors)
+    matches = []
+    directions = [
+        (1, 0),   # Right
+        (0, 1),   # Down
+        (-1, 0),  # Left
+        (0, -1),  # Up
+        (1, 1),   # Down-right
+        (-1, -1), # Up-left
+        (1, -1),  # Up-right
+        (-1, 1),  # Down-left
+    ]
+    for x in range(grid_size):
+        for y in range(grid_size):
+            for dx, dy in directions:
+                positions = []
+                for i in range(sequence_length):
+                    nx = x + i * dx
+                    ny = y + i * dy
+                    if 0 <= nx < grid_size and 0 <= ny < grid_size:
+                        if not colors_match(grid[nx][ny], input_colors[i]):
+                            break
+                        else:
+                            positions.append((nx, ny))
+                    else:
+                        break
+                else:
+                    matches.append(positions)
+    return matches
 
-            running = True
-            while running:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        running = False
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                        running = False
+def display_image_with_highlights(image_path, matches_queue, stop_event):
+    """Displays the image with the matching sequences highlighted in a separate thread."""
+    pygame.init()
+    # Get screen size and scale image to fit if necessary
+    screen_width, screen_height = pygame.display.Info().current_w, pygame.display.Info().current_h
+    scale_factor = min(screen_width / 2048, screen_height / 2048, 1)
+    window_size = (int(2048 * scale_factor), int(2048 * scale_factor))
+    screen = pygame.display.set_mode(window_size)
+    pygame.display.set_caption("Pattern Highlight")
 
-                # Draw the image
-                screen.blit(pygame_image, (0, 0))
+    # Load and scale the image
+    image = Image.open(image_path).convert('RGB')
+    mode = image.mode
+    size = image.size
+    data = image.tobytes()
+    pygame_image = pygame.image.fromstring(data, size, mode)
+    if scale_factor != 1:
+        pygame_image = pygame.transform.smoothscale(pygame_image, window_size)
 
-                # Highlight the found 3x3 area in yellow
-                # Each block is 2x2 pixels, so the 3x3 blocks cover a 6x6 pixel area
-                x_pixel, y_pixel = (found_coords[0] - 1) * 2, (found_coords[1] - 1) * 2
-                highlight_rect = pygame.Surface((6 * 2, 6 * 2), pygame.SRCALPHA)
-                highlight_rect.fill((255, 255, 0, 100))  # Semi-transparent yellow
-                screen.blit(highlight_rect, (x_pixel, y_pixel))
+    block_size = 2 * scale_factor  # Each block is 2x2 pixels, scaled
 
-                pygame.display.flip()
+    while not stop_event.is_set():
+        # Check if there are new matches to display
+        if not matches_queue.empty():
+            matches = matches_queue.get()
+            # Prepare the highlight surface
+            highlight_surface = pygame.Surface(window_size, pygame.SRCALPHA)
+            # Draw the highlights
+            for match in matches:
+                for x, y in match:
+                    rect = pygame.Rect(x * block_size, y * block_size, block_size, block_size)
+                    pygame.draw.rect(highlight_surface, (255, 0, 0, 228), rect)
 
-            pygame.quit()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                stop_event.set()
+                return
 
-        # Ask user if they want to search again
-        retry = input("Do you want to search for another pattern? (yes/no): ").strip().lower()
-        if retry != "yes":
+        # Draw the image and highlights
+        screen.blit(pygame_image, (0, 0))
+        if 'highlight_surface' in locals():
+            screen.blit(highlight_surface, (0, 0))
+        pygame.display.flip()
+        pygame.time.wait(100)  # Wait to reduce CPU usage
+
+    pygame.quit()
+
+def main():
+    import queue
+
+    grid = load_image_to_grid("mansion.png")  # Source image grid
+    matches_queue = queue.Queue()
+    stop_event = threading.Event()
+
+    # Start the Pygame display in a separate thread
+    display_thread = threading.Thread(
+        target=display_image_with_highlights,
+        args=("mansion_map.png", matches_queue, stop_event),
+        daemon=True
+    )
+    display_thread.start()
+
+    input_colors = []
+
+    while not stop_event.is_set():
+        color = get_user_color()
+        if color is None:
+            print("Exiting program.")
+            stop_event.set()
             break
+        input_colors.append(color)
+        print(f"Current input colors: {input_colors}")
 
-# Run the program
-search_and_display_with_highlight()
+        matches = find_matching_sequences(grid, input_colors)
+        print(f"Found {len(matches)} matching sequences.")
+
+        if len(matches) == 0:
+            print("No matches found. The sequence does not exist in the image.")
+            continue
+
+        # Update the display by putting the matches in the queue
+        matches_queue.put(matches)
+
+    print("Program terminated.")
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\nProgram interrupted by user.")
+        sys.exit()
