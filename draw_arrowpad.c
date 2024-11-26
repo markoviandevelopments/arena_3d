@@ -1,6 +1,10 @@
 #include "game.h"
 
-void DrawArrowpad() {
+
+float x;
+float z;
+
+void DrawArrowpad(float *data) {
     static Model model = { 0 };
     static bool isModelLoaded = false;
     if (!isModelLoaded) {
@@ -39,6 +43,36 @@ void DrawArrowpad() {
 
     // Draw the model with rotation and scaling
     DrawModelEx(model, modelPosition, rotationAxis, rotationAngle, modelScale, WHITE);
+
+
+    Color squareColor = BLUE;
+
+
+    if (data[7] == 1.0f) {
+        x = -11.3f;
+        z = 15.5f;
+    } else if (data[7] == 2.0f) {
+        x = -15.5f;
+        z = 11.3f;
+    } else if (data[7] == 3.0f) {
+        x = -19.75f;
+        z = 15.5f;
+    } else if (data[7] == 4.0f) {
+        x = -15.5f;
+        z = 19.75f;
+    }  else {
+        x = -15.75f;
+        z = 15.3f;
+     }
+
+
+    Vector3 position = {
+        x,
+        1.4f,
+        z
+    };
+    DrawCube(position, 0.3f, 0.1f, 0.3f, squareColor);
+    DrawCubeWires(position, 0.3f, 0.1f, 0.3f, BLACK);
 
 
 

@@ -6,12 +6,13 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
+/*
 // Player structure
 typedef struct {
     int id;
     float x, y, z;
 } Player;
-
+*/
 
 // Client information structure
 typedef struct {
@@ -21,10 +22,10 @@ typedef struct {
 
 
 // Globals
-Player playerData [2] = {{ .id = 0, .x = 0.0f, .y = 0.0f, .z = 0.0f }, { .id = 1, .x = 0.0f, .y = 0.0f, .z = 0.0f }};
+PlayerShort playerData [2] = {{ .id = 0, .x = 0.0f, .y = 0.0f, .z = 0.0f }, { .id = 1, .x = 0.0f, .y = 0.0f, .z = 0.0f }};
 int nextPlayerId = 0;
 
-float data[10] = {0.0f, -40.0f, 1.0f, 0.0f, -40.0f, 1.0f, 0.7f, 1.6f}; // (x-pos, z-pos, food ... x2), agent 1 angle, agent 2 angle
+float data[20] = {0.0f, -40.0f, 1.0f, 0.0f, -40.0f, 1.0f, 0.7f, 1.6f, 0.0f}; // (x-pos, z-pos, food ... x2), agent 1 angle, agent 2 angle
 
 pthread_mutex_t playerMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t dataMutex = PTHREAD_MUTEX_INITIALIZER;
@@ -60,6 +61,7 @@ void *update_data_thread(void *arg) {
         pthread_mutex_lock(&dataMutex);
 
         AlterBrownian(data); // Call the external function to update the data
+        AlterArrowpad(data, playerData);
 
         pthread_mutex_unlock(&dataMutex);
 
@@ -100,7 +102,7 @@ void *handle_client(void *arg) {
 
         snprintf(buffer, BUFFER_SIZE, "%d %f %f %f %f %f %f %lf %f %f %f %f %f %f", player_id, playerData[player_id].x, playerData[player_id].y, playerData[player_id].z, playerData[1 - player_id].x, playerData[1 - player_id].y, playerData[1 - player_id].z, current_time, data[0], data[1], data[2], data[3], data[4], data[5]);
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             char temp[32];
             snprintf(temp, sizeof(temp), " %f", data[i + 6]);
             strncat(buffer, temp, BUFFER_SIZE - strlen(buffer) - 1);

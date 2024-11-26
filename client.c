@@ -18,7 +18,7 @@ float animFramePlayer2 = 0.0f;
 
 double server_time;
 
-float data[10] = {0.0f, -40.0f, 0.0f};
+float data[20] = {0.0f, -40.0f, 0.0f};
 
 int sensitivity = 0;
 
@@ -172,7 +172,7 @@ int main() {
 
             // Parse the dynamic `data` part of the message
             char *dynamicPart = buffer;
-            for (int i = 0; i < 8; i++) {  // Skip fixed part
+            for (int i = 0; i < 9; i++) {  // Skip fixed part
                 dynamicPart = strchr(dynamicPart, ' ');
                 if (dynamicPart) {
                     dynamicPart++;
@@ -180,7 +180,7 @@ int main() {
             }
 
             int dataIndex = 0;
-            while (dynamicPart && dataIndex < 7) {
+            while (dynamicPart && dataIndex < 9) {
                 if (sscanf(dynamicPart, "%f", &data[dataIndex]) == 1) {
                     dataIndex++;
                 }
@@ -188,10 +188,6 @@ int main() {
                 if (dynamicPart) {
                     dynamicPart++;
                 }
-            }
-
-            if (dataIndex != 7) {
-                fprintf(stderr, "Error: Could not parse all data elements from server message.\n");
             }
 
             // Increment data stats for debugging
@@ -235,7 +231,7 @@ int main() {
         );
         DrawArena();
         DrawSecrethouse();
-        DrawArrowpad();
+        DrawArrowpad(data);
         DrawThing(server_time);
         DrawBrownian(data);
         //DrawPicture();

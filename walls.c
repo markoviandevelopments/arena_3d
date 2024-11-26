@@ -27,5 +27,11 @@ int Walls(float x, float y, float z) {
         return 1;
     }
 
+    // arrowpad
+    if (y < 1.5f && ( (x < -11.0f && z < 17.0f && x > -20.0f && z > 14.0f ) || (x < -14.0f && z < 20.0f && x > -17.0f && z > 11.0f) ) ) {
+        return 1;
+    }
+
+
     return 0;
 }

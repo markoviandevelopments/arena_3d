@@ -24,6 +24,13 @@ extern ModelAnimation *animations;  // Declare global animations
 extern int animCount;               // Declare animation count
 extern float animFrame;             // Declare animation frame
 
+// Player structure
+typedef struct {
+    int id;
+    float x, y, z;
+} PlayerShort;
+
+
 // Function prototypes
 void DrawChessboard(int boardSize, float squareSize);
 // void DrawPlayers(int id, float x, float y, float z, float x1, float y1, float z1);
@@ -34,12 +41,13 @@ void DrawPlayers(
 void DrawThing(double server_time);
 void DrawArena();
 void DrawSecrethouse();
-void DrawArrowpad();
+void DrawArrowpad(float *data);
 int Ladders(float x, float y, float z);
 int Grounds(float x, float y, float z);
 int Walls(float x, float y, float z);
 void DrawPicture();
 void AlterBrownian(float *data);
+void AlterArrowpad(float *data, PlayerShort *playerData);
 void DrawBrownian(float *data);
 
 #endif
