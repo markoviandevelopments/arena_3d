@@ -64,7 +64,7 @@ int main() {
 
     printf("Connected to server.\n");
 
-    InitWindow(800, 600, "Chessboard POV");
+    InitWindow(1200, 900, "Chessboard POV");
     SetTargetFPS(60);
 
     LoadFoxAnimations("models/Fox.glb");
