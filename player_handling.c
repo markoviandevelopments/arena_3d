@@ -104,8 +104,19 @@ void HandlePlayerMovement(
 
     // Update yaw based on moveDirection
     if (Vector3Length(player->moveDirection) > 0.01f) {
-        player->yaw = atan2(player->moveDirection.z, player->moveDirection.x) * RAD2DEG;
-        if (player->yaw < 0.0f) player->yaw += 360.0f; // Normalize to [0, 360)
+
+        float baseYaw = atan2(player->moveDirection.z, player->moveDirection.x) * RAD2DEG;
+  
+        // If moving backward, invert the yaw
+        if (IsKeyDown(KEY_S)) {
+            player->yaw = baseYaw + 180.0f; // Face the opposite direction
+        } else {
+            player->yaw = baseYaw; // Regular direction
+        }
+
+        // Normalize yaw to [0, 360)
+        if (player->yaw < 0.0f) player->yaw += 360.0f;
+        if (player->yaw >= 360.0f) player->yaw -= 360.0f;
     }
 
     if (IsKeyDown(KEY_M) && !wait_c) { // Increase sensitivity
