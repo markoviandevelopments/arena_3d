@@ -172,7 +172,7 @@ int main() {
 
             // Parse the dynamic `data` part of the message
             char *dynamicPart = buffer;
-            for (int i = 0; i < 9; i++) {  // Skip fixed part
+            for (int i = 0; i < 11; i++) {  // Skip fixed part
                 dynamicPart = strchr(dynamicPart, ' ');
                 if (dynamicPart) {
                     dynamicPart++;
@@ -233,6 +233,7 @@ int main() {
         DrawSecrethouse();
         DrawAHouse();
         DrawArrowpad(data);
+        DrawBot(data);
         DrawThing(server_time);
         DrawBrownian(data);
         //DrawPicture();
@@ -246,7 +247,11 @@ int main() {
         DrawText(TextFormat("ID: %d  X: %.2f  Y: %.2f  Z: %.2f", player_id, player.position.x, player.position.y, player.position.z), 10, 100, 20, text_color);
         DrawText(TextFormat("Session Time: %.2f  Server Time: %.2lf", GetTime(), server_time / 1000.0), 10, 130, 20, text_color);
         DrawText(TextFormat("Agent 1 Score: %.2f  Agent 2 Score: %.2f", data[2], data[5]), 10, 150, 20, text_color);
-        DrawText(TextFormat("Sensitivity: %d", sensitivity), 10, 180, 20, text_color);
+        if (sensitivity >= 0 && sensitivity <= 10) {
+            DrawText(TextFormat("Sensitivity: %d  Data item at this index: %f", sensitivity, data[sensitivity]), 10, 180, 20, text_color);
+        } else {
+            DrawText(TextFormat("Sensitivity: %d", sensitivity), 10, 180, 20, text_color);
+        }
         EndDrawing();
     }
     UnloadFoxAnimations();

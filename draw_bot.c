@@ -2,11 +2,12 @@
 
 
 
-void DrawArrowpad(float *data) {
+void DrawBot(float *data) {
 
     float x;
     float z;
 
+/*
     static Model model = { 0 };
     static bool isModelLoaded = false;
     if (!isModelLoaded) {
@@ -45,27 +46,12 @@ void DrawArrowpad(float *data) {
 
     // Draw the model with rotation and scaling
     DrawModelEx(model, modelPosition, rotationAxis, rotationAngle, modelScale, WHITE);
+*/
 
+    Color squareColor = RED;
 
-    Color squareColor = BLUE;
-
-
-    if (data[5] == 1.0f) {
-        x = -11.3f;
-        z = 15.5f;
-    } else if (data[5] == 2.0f) {
-        x = -15.5f;
-        z = 11.3f;
-    } else if (data[5] == 3.0f) {
-        x = -19.75f;
-        z = 15.5f;
-    } else if (data[5] == 4.0f) {
-        x = -15.5f;
-        z = 19.75f;
-    }  else {
-        x = -15.75f;
-        z = 15.3f;
-     }
+    x = data[6];
+    z = data[7];
 
 
     Vector3 position = {

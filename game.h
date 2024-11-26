@@ -43,12 +43,14 @@ void DrawArena();
 void DrawSecrethouse();
 void DrawAHouse();
 void DrawArrowpad(float *data);
+void DrawBot(float *data);
 int Ladders(float x, float y, float z);
 int Grounds(float x, float y, float z);
 int Walls(float x, float y, float z);
 void DrawPicture();
 void AlterBrownian(float *data);
 void AlterArrowpad(float *data, PlayerShort *playerData);
+void AlterBot(float *data);
 void DrawBrownian(float *data);
 
 #endif
