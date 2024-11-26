@@ -42,7 +42,7 @@ void DrawBot(float *data) {
 
     // Draw the loaded model
     Vector3 modelPosition = { x, 0.4f, z }; // Adjust position as needed
-    Vector3 modelScale = { 1.0f, 1.0f, 1.0f };
+    Vector3 modelScale = { 3.0f, 3.0f, 3.0f };
     Vector3 rotationAxis = { 1.0f, 0.0f, 0.0f };   // Rotation around Y-axis
     float rotationAngle =  0.0f;
 
@@ -61,8 +61,8 @@ void DrawBot(float *data) {
         0.4f,
         z
     };
-    DrawCube(position, 0.5f, 0.2f, 0.5f, squareColor);
-    DrawCubeWires(position, 0.5f, 0.2f, 0.5f, BLACK);
+    DrawCube(position, 1.5f, 0.2f, 1.5f, squareColor);
+    DrawCubeWires(position, 1.5f, 0.2f, 1.5f, BLACK);
 
 
 
