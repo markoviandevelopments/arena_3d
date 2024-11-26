@@ -50,8 +50,8 @@ void DrawBot(float *data) {
 
     Color squareColor = RED;
 
-    x = data[6];
-    z = data[7];
+    x = data[9];
+    z = data[10];
 
 
     Vector3 position = {

@@ -50,16 +50,16 @@ void DrawArrowpad(float *data) {
     Color squareColor = BLUE;
 
 
-    if (data[5] == 1.0f) {
+    if (data[8] == 1.0f) {
         x = -11.3f;
         z = 15.5f;
-    } else if (data[5] == 2.0f) {
+    } else if (data[8] == 2.0f) {
         x = -15.5f;
         z = 11.3f;
-    } else if (data[5] == 3.0f) {
+    } else if (data[8] == 3.0f) {
         x = -19.75f;
         z = 15.5f;
-    } else if (data[5] == 4.0f) {
+    } else if (data[8] == 4.0f) {
         x = -15.5f;
         z = 19.75f;
     }  else {
