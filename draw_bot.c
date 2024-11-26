@@ -61,8 +61,8 @@ void DrawBot(float *data) {
         0.4f,
         z
     };
-    DrawCube(position, 0.5f, 1.1f, 0.5f, squareColor);
-    DrawCubeWires(position, 0.5f, 1.1f, 0.5f, BLACK);
+    DrawCube(position, 0.5f, 0.2f, 0.5f, squareColor);
+    DrawCubeWires(position, 0.5f, 0.2f, 0.5f, BLACK);
 
 
 
