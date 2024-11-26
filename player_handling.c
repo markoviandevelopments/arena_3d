@@ -142,6 +142,7 @@ void HandlePlayerMovement(
         player->position.z = 0.0f;
         player->position.y = 5.0f;
         player->velocityY = 0.0f;
+        player->yaw = 90.0f;
     }
 
     // Collision handling using proposed position
@@ -149,7 +150,6 @@ void HandlePlayerMovement(
         player->position.x + moveDirection->x,
         player->position.y,
         player->position.z + moveDirection->z,
-        player->yaw = 90.0f
     };
 
     if (!Walls(proposedPosition.x, player->position.y, player->position.z)) {
