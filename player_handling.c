@@ -109,7 +109,7 @@ void HandlePlayerMovement(
   
         // If moving backward, invert the yaw
         if (IsKeyDown(KEY_S)) {
-            player->yaw = baseYaw + 180.0f; // Face the opposite direction
+            player->yaw = baseYaw - 180.0f; // Face the opposite direction
         } else {
             player->yaw = baseYaw; // Regular direction
         }
