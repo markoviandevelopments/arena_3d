@@ -5,5 +5,10 @@ int Ladders(float x, float y, float z) {
         return 1;
     }
 
+    if (x > 72.0f && x < 74.0f && z > 113.0f && z < 115.0f && y < 200.0f) {
+        return 1;
+    }
+
+
     return 0;
 }

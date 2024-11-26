@@ -21,5 +21,18 @@ int Grounds(float x, float y, float z) {
         return 1;
     }
 
+    //mansion ground
+    for (int i=0; i < 9; i++) {
+        if (y < PLAYER_HEIGHT + 0.1f + i * 23.0f && y > PLAYER_HEIGHT + 0.1f + i * 23.0f - 1.0f && z > 20.0f && x > 0.0f && z < 120.0f && x < 100.0f) {
+            return 1;
+        }
+    }
+
+    // top of ladder in mansion
+    if (x > 72.0f && x < 74.0f && z > 113.0f && z < 115.0f && y >= 200.0f && y <= 201.0f) {
+        return 1;
+    }
+
+
     return 0; // Not ground
 }
