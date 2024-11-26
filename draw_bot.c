@@ -7,12 +7,14 @@ void DrawBot(float *data) {
     float x;
     float z;
 
-/*
+    x = data[9];
+    z = data[10];
+
     static Model model = { 0 };
     static bool isModelLoaded = false;
     if (!isModelLoaded) {
-        model = LoadModel("models/arrowpad.obj"); // Load the model
-        Texture2D texture = LoadTexture("models/arrowpad_texture.png"); // Load the texture
+        model = LoadModel("models/man.obj"); // Load the model
+        Texture2D texture = LoadTexture("models/man.png"); // Load the texture
 
         // After loading the texture
         SetTextureFilter(texture, TEXTURE_FILTER_TRILINEAR); // Or TEXTURE_FILTER_BILINEAR
@@ -39,14 +41,14 @@ void DrawBot(float *data) {
 
 
     // Draw the loaded model
-    Vector3 modelPosition = { -20.0f, 0.00f, 20.0f }; // Adjust position as needed
+    Vector3 modelPosition = { x, 0.4f, z }; // Adjust position as needed
     Vector3 modelScale = { 1.0f, 1.0f, 1.0f };
     Vector3 rotationAxis = { 1.0f, 0.0f, 0.0f };   // Rotation around Y-axis
     float rotationAngle =  0.0f;
 
     // Draw the model with rotation and scaling
     DrawModelEx(model, modelPosition, rotationAxis, rotationAngle, modelScale, WHITE);
-*/
+
 
     Color squareColor = RED;
 

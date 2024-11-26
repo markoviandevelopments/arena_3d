@@ -7,7 +7,7 @@ int Grounds(float x, float y, float z) {
     }
 
     // castle top
-    if (y > 20.0f && y < 21.5f && x > -101.0f && x < 99.0f && z > -101.0f && z < 99.0f) {
+    if (y > 20.0f && y < 21.5f && x > -101.0f && x < 99.0f && z > -101.0f && z < 99.0f && pow(pow((x) / 60.0f, 2) + pow((z + 40.0f) / 60.0f, 2), 0.5f) <= 1.0f) {
         return 1;
     }
 
