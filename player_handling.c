@@ -63,42 +63,49 @@ void InitializePlayer(Player *player, Vector3 startPosition) {
 // Handle player movement and input
 void HandlePlayerMovement(
     Player *player, float deltaTime, bool *isWalking, bool *isRunning,
-    bool *isJumping, Vector3 *moveDirection, int (*Walls)(float, float, float),
-    int (*Ladders)(float, float, float), // Pass the ladder check function
+    bool *isJumping, int (*Walls)(float, float, float),
+    int (*Ladders)(float, float, float),
     int *sensitivity
 ) {
     *isWalking = false;
     *isRunning = false;
-    *moveDirection = (Vector3){ 0.0f, 0.0f, 0.0f }; // Reset moveDirection
+
+    player->moveDirection = (Vector3){ 0.0f, 0.0f, 0.0f };
 
     player->isOnLadder = Ladders(player->position.x, player->position.y, player->position.z);
 
     // Movement input handling
     if (IsKeyDown(KEY_W)) { // Move forward
-        moveDirection->x += cos(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
-        moveDirection->z += sin(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
+        player->moveDirection.x += cos(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
+        player->moveDirection.z += sin(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
         *isWalking = true;
     }
     if (IsKeyDown(KEY_S)) { // Move backward
-        moveDirection->x -= cos(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
-        moveDirection->z -= sin(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
+        player->moveDirection.x -= cos(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
+        player->moveDirection.z -= sin(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
         *isWalking = true;
     }
     if (IsKeyDown(KEY_E)) { // Sprint
-        moveDirection->x += 3.0f * cos(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime;
-        moveDirection->z += 3.0f * sin(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime;
+        player->moveDirection.x += 3.0f * cos(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime;
+        player->moveDirection.z += 3.0f * sin(DEG2RAD * player->yaw) * MOVE_SPEED * deltaTime;
         *isRunning = true;
         *isWalking = false; // Override walking
     }
     if (IsKeyDown(KEY_A)) { // Strafe left
-        moveDirection->x += cos(DEG2RAD * (player->yaw - 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
-        moveDirection->z += sin(DEG2RAD * (player->yaw - 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
+        player->moveDirection.x += cos(DEG2RAD * (player->yaw - 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
+        player->moveDirection.z += sin(DEG2RAD * (player->yaw - 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
         *isWalking = true;
     }
     if (IsKeyDown(KEY_D)) { // Strafe right
-        moveDirection->x += cos(DEG2RAD * (player->yaw + 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
-        moveDirection->z += sin(DEG2RAD * (player->yaw + 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
+        player->moveDirection.x += cos(DEG2RAD * (player->yaw + 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
+        player->moveDirection.z += sin(DEG2RAD * (player->yaw + 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
         *isWalking = true;
+    }
+
+    // Update yaw based on moveDirection
+    if (Vector3Length(player->moveDirection) > 0.01f) {
+        player->yaw = atan2(player->moveDirection.z, player->moveDirection.x) * RAD2DEG;
+        if (player->yaw < 0.0f) player->yaw += 360.0f; // Normalize to [0, 360)
     }
 
     if (IsKeyDown(KEY_M) && !wait_c) { // Increase sensitivity
@@ -147,21 +154,21 @@ void HandlePlayerMovement(
 
     // Collision handling using proposed position
     Vector3 proposedPosition = {
-        player->position.x + moveDirection->x,
+        player->position.x + player->moveDirection.x,
         player->position.y,
-        player->position.z + moveDirection->z,
+        player->position.z + player->moveDirection.z,
     };
 
     if (!Walls(proposedPosition.x, player->position.y, player->position.z)) {
         player->position.x = proposedPosition.x; // Apply X movement
     } else {
-        moveDirection->x = 0.0f; // Stop X movement
+        player->moveDirection.x = 0.0f; // Stop X movement
     }
 
     if (!Walls(player->position.x, player->position.y, proposedPosition.z)) {
         player->position.z = proposedPosition.z; // Apply Z movement
     } else {
-        moveDirection->z = 0.0f; // Stop Z movement
+        player->moveDirection.z = 0.0f; // Stop Z movement
     }
 
 }

@@ -94,8 +94,7 @@ int main() {
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
 
-        Vector3 moveDirection = {0.0f, 0.0f, 0.0f};
-        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, &moveDirection, Walls, Ladders, &sensitivity);
+        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, Walls, Ladders, &sensitivity);
 
         isMoving = isWalkingPlayer1 || isRunningPlayer1;
         isRunning = isRunningPlayer1;
@@ -222,11 +221,9 @@ int main() {
         BeginMode3D(camera);
 
         DrawChessboard(BOARD_SIZE, SQUARE_SIZE);
-        // DrawPlayers(player, otherPlayer, foxModel);
-        // DrawPlayers(player_id, player.position.x, player.position.y, player.position.z, otherPlayer.position.x, otherPlayer.position.y, otherPlayer.position.z);
         DrawPlayers(
             player_id,
-            player.position.x, player.position.y, player.position.z, animIndex1, animFramePlayer1,
+            player.position.x, player.position.y, player.position.z, animIndex1, animFramePlayer1, player.yaw,
             otherPlayer.position.x, otherPlayer.position.y, otherPlayer.position.z, animIndex2, animFramePlayer2
         );
         DrawArena();

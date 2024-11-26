@@ -6,6 +6,7 @@
 
 typedef struct Player {
     Vector3 position;
+    Vector3 moveDirection;
     float velocityY;
     bool isGrounded;
     bool isOnLadder; // New flag for ladder state
@@ -22,7 +23,7 @@ typedef struct Player {
 void InitializePlayer(Player *player, Vector3 startPosition);
 void HandlePlayerMovement(
     Player *player, float deltaTime, bool *isWalking, bool *isRunning,
-    bool *isJumping, Vector3 *moveDirection, int (*Walls)(float, float, float),
+    bool *isJumping, int (*Walls)(float, float, float),
     int (*Ladders)(float, float, float),
     int *sensitivity
 );
