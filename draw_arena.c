@@ -5,7 +5,7 @@ void DrawArena() {
     static bool isModelLoaded = false;
     if (!isModelLoaded) {
         model = LoadModel("models/uv_arena.obj"); // Load the model
-        Texture2D texture = LoadTexture("models/arena_texture.png"); // Load the texture
+        Texture2D texture = LoadTexture("models/palace.png"); // Load the texture
 
         // After loading the texture
         SetTextureFilter(texture, TEXTURE_FILTER_TRILINEAR); // Or TEXTURE_FILTER_BILINEAR
@@ -27,7 +27,7 @@ void DrawArena() {
 
     // Update texture scaling factor
     Shader shader = model.materials[0].shader;
-    float textureScale = 50.0f; // Use a constant for testing
+    float textureScale = 1.0f; // Use a constant for testing
     SetShaderValue(shader, GetShaderLocation(shader, "textureScale"), &textureScale, SHADER_UNIFORM_FLOAT);
 
 
