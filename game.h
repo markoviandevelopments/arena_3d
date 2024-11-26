@@ -41,6 +41,7 @@ void DrawPlayers(
 void DrawThing(double server_time);
 void DrawArena();
 void DrawSecrethouse();
+void DrawAHouse();
 void DrawArrowpad(float *data);
 int Ladders(float x, float y, float z);
 int Grounds(float x, float y, float z);

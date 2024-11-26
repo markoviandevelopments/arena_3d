@@ -231,6 +231,7 @@ int main() {
         );
         DrawArena();
         DrawSecrethouse();
+        DrawAHouse();
         DrawArrowpad(data);
         DrawThing(server_time);
         DrawBrownian(data);
