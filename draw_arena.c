@@ -5,7 +5,7 @@ void DrawArena() {
     static bool isModelLoaded = false;
     if (!isModelLoaded) {
         model = LoadModel("models/uv_arena.obj"); // Load the model
-        Texture2D texture = LoadTexture("models/palace.png"); // Load the texture
+        Texture2D texture = LoadTexture("models/less_clear.png"); // Load the texture
 
         // After loading the texture
         SetTextureFilter(texture, TEXTURE_FILTER_TRILINEAR); // Or TEXTURE_FILTER_BILINEAR
