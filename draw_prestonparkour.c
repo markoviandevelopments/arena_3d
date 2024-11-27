@@ -1,6 +1,6 @@
 #include "game.h"
 
-void DrawPrestonparkour(float *data) {
+void DrawPrestonparkour(float *data, double server_time) {
     Color squareColor = (Color){43, 255, 0, 200};
 
     Vector3 position;
