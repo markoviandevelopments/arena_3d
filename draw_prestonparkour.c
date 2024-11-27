@@ -8,7 +8,7 @@ void DrawPrestonparkour(float *data) {
 
     srand(42);
 
-    for (int i=0;i<80;i++) {
+    for (int i=0;i<180;i++) {
         position = (Vector3){
             -20.0f - 4.0f * (( rand() % 10 ) / 10.0f - 0.5f) * 2.0f * 2.0f * pow(2, i / 60.0f) ,
             -1.5f,

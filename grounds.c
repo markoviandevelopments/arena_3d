@@ -8,7 +8,7 @@ int Grounds(float x, float y, float z) {
     srand(42);
 
     // Preston Parkour :)
-    for (int i=0; i<80;i++) {
+    for (int i=0; i<180;i++) {
         x_m = -20.0f - 4.0f * (( rand() % 10 ) / 10.0f - 0.5f) * 2.0f * 2.0f *  pow(2, i / 60.0f);
         z_m = 110.0f + 5.0f * pow(i, 1.010f);
         if (x > x_m - 2.0f && x < x_m + 2.0f && z >z_m - 2.0f && z < z_m + 2.0f && y > -1.0f && y < 0.0f) {
