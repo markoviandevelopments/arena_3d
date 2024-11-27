@@ -16,7 +16,7 @@ void DrawPrestonparkour(float *data, double server_time) {
         };
 
         squareColor = (Color){43, 255, 0, 200};
-        if ((int)round(server_time / 100.0) % 180 == i) {
+        if ((int)round(server_time / 500.0) % 180 == i || (int)round(2.0 * server_time / 500.0) % 180 == i) {
             squareColor = (Color){0, 0, 255, 200};
         }
 
