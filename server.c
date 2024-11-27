@@ -22,7 +22,7 @@ typedef struct {
 
 
 // Globals
-PlayerShort playerData [2] = {{ .id = 0, .x = 0.0f, .y = 0.0f, .z = 0.0f }, { .id = 1, .x = 0.0f, .y = 0.0f, .z = 0.0f }};
+PlayerShort playerData [2] = {{ .id = 0, .x = 0.0f, .y = 0.0f, .z = 90.0f }, { .id = 1, .x = 0.0f, .y = 0.0f, .z = 90.0f }};
 int nextPlayerId = 0;
 
 float data[20] = {0.0f, -40.0f, 1.0f, 0.0f, -40.0f, 1.0f, 0.7f, 1.6f, 0.0f, 0.0f, 15.0f}; // (x-pos, z-pos, food ... x2), agent 1 angle, agent 2 angle, arrow state, x of arrow rc bot, z of arrow rc bot
