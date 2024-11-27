@@ -10,7 +10,6 @@ typedef struct Player {
     float velocityY;
     bool isGrounded;
     bool isOnLadder;
-    bool isGhostMode;
     float yaw;
     float pitch;
 } Player;

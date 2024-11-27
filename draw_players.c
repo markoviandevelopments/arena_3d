@@ -39,6 +39,7 @@ void DrawPlayers(
     if(!isGhostMode) {
         // Player 1
         DrawSinglePlayer(position1, animIndex1, animFrame1, id1 ? RED : BLUE, yaw1);
+    } else {
         DrawCube(position1, 0.15f, 0.3f, 0.15f, YELLOW);
         DrawCubeWires(position1, 0.15f, 0.3f, 0.15f, BLACK);
     }

@@ -22,6 +22,8 @@ float data[20] = {0.0f, -40.0f, 0.0f};
 
 int sensitivity = 0;
 
+bool isGhostMode = false;
+
 int main() {
 
     // Networking variables
@@ -42,8 +44,6 @@ int main() {
     bool isWalkingPlayer1 = false;
     bool isRunningPlayer2 = false;
     bool isWalkingPlayer2 = false;
-
-    bool isGhostMode = false;
 
     float animationSpeed = 40.0f; // Adjust this value based on the desired speed
 
@@ -138,7 +138,9 @@ int main() {
 
         if (IsKeyPressed(KEY_G)) {
             isGhostMode = 1 - isGhostMode;
-            printf("Ghost Mode activated...\n\n\n\n");
+            if(isGhostMode) {
+                printf("Ghost Mode activated...\n\n\n\n");
+            } else {printf("Ghost Mode deactivated...\n\n\n\n\n");}
         }
 
         //Take a screenshot
@@ -229,7 +231,7 @@ int main() {
         DrawChessboard(BOARD_SIZE, SQUARE_SIZE);
         DrawPlayers(
             player_id,
-            player.position.x, player.position.y, player.position.z, animIndex1, animFramePlayer1, player.yaw, player.isGhostMode,
+            player.position.x, player.position.y, player.position.z, animIndex1, animFramePlayer1, player.yaw, isGhostMode,
             otherPlayer.position.x, otherPlayer.position.y, otherPlayer.position.z, animIndex2, animFramePlayer2
         );
         DrawArena();
