@@ -6,7 +6,7 @@ void DrawPrestonparkour() {
     Vector3 position = {
         -10.0f,
         -1.0f,
-        106.0f
+        110.0f
     };
 
     DrawCube(position, 4.0f, 1.0f, 4.0f, squareColor);
