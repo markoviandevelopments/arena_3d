@@ -3,7 +3,7 @@
 int Grounds(float x, float y, float z) {
 
     // Preston Parkour :)
-    if (x > -10.0f && x < -9.0f && z > 110.0f && z < 111.0f && y > -1.0f && y < 0.0f) {
+    if (x > -10.0f && x < -9.0f && z > 101.0f && z < 102.0f && y > -1.0f && y < 0.0f) {
         return 1;
     }
 
