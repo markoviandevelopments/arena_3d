@@ -46,15 +46,15 @@ int Walls(float x, float y, float z) {
     }
 
     if (x >= -84.0f && x <= -60.0f && z >= 60.0f && z <= 84.0f) {
-        return 0;
+        return 1;
     }
-
+    //Wills House DOOR
     if (x == -60.0f && z >= 69.0f && z <= 75.0f) {
         return 0;
     }
 
     if (y > -0.1f && x >= -85.0f && x <= -59.5f && z >= 59.5f && z <= 85.0f) {
-        return 1;
+        return 0;
     }
 
 
