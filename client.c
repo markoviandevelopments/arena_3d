@@ -228,6 +228,7 @@ int main() {
         );
         DrawArena();
         DrawMansion();
+        DrawPrestonparkour();
         DrawSecrethouse();
         DrawAHouse();
         DrawArrowpad(data);

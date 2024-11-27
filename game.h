@@ -41,6 +41,7 @@ void DrawPlayers(
 void DrawThing(double server_time);
 void DrawArena();
 void DrawMansion();
+void DrawPrestonparkour();
 void DrawSecrethouse();
 void DrawAHouse();
 void DrawArrowpad(float *data);
