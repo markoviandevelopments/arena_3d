@@ -4,6 +4,7 @@ int Grounds(float x, float y, float z) {
 
     float x_m;
     float z_m;
+    float y_m;
 
     srand(42);
 
@@ -15,6 +16,22 @@ int Grounds(float x, float y, float z) {
             return 1;
         }
     }
+
+    srand(42);
+    float ang_off;
+    float scale;
+
+    for (int i=0; i<380;i++) {
+        scale = 1.0f + i / 270.0f;
+        ang_off = (rand() % 1000) / 1000.0f / 10.0f * scale;
+        x_m = -80.0f + 30.0f * cos(i / 5.0f * scale - 1.28f + ang_off);
+        y_m = -1.5f + 0.2f * i * scale;
+        z_m = 130.0f + 30.0f * sin(i / 5.0f * scale -1.28f + ang_off);
+        if (x > x_m - 2.0f && x < x_m + 2.0f && z >z_m - 2.0f && z < z_m + 2.0f && y > y_m - 0.5f + PLAYER_HEIGHT && y < y_m + 0.5f + PLAYER_HEIGHT) {
+            return 1;
+        }
+    }
+
 
 
     // top of ladder

@@ -25,6 +25,7 @@ int sensitivity_r = 0;
 
 bool isGhostMode = false;
 
+
 WillsBlocks willsBlocks[BLOCKCOUNT];
 
 int main() {
