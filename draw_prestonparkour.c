@@ -4,7 +4,7 @@ void DrawPrestonparkour() {
     Color squareColor = RED;
 
     Vector3 position = {
-        -8.0f + 2.0f,
+        -8.0f - 2.0f,
         -1.0f,
         100.0f + 2.0f
     };
