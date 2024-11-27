@@ -1,7 +1,7 @@
 #include "game.h"
 
 void DrawPrestonparkour(float *data) {
-    Color squareColor = RED;
+    Color squareColor = (Color){174, 0, 255, 200};
 
     Vector3 position;
 
@@ -20,12 +20,12 @@ void DrawPrestonparkour(float *data) {
 
     }
 
-    squareColor = (Color){0, 0, 255, 150};
+    squareColor = (Color){255, 255, 0, 150};
 
 
     position = (Vector3){
         -20.0f - 4.0f * ( 5 ),
-        -1.5f,
+        -3.1f,
         data[11]
     };
 
