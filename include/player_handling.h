@@ -9,7 +9,8 @@ typedef struct Player {
     Vector3 moveDirection;
     float velocityY;
     bool isGrounded;
-    bool isOnLadder; // New flag for ladder state
+    bool isOnLadder;
+    bool isGhostMode;
     float yaw;
     float pitch;
 } Player;
