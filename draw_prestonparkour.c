@@ -1,18 +1,18 @@
 #include "game.h"
 
 void DrawPrestonparkour(float *data) {
-    Color squareColor = (Color){174, 0, 255, 200};
+    Color squareColor = (Color){43, 255, 0, 200};
 
     Vector3 position;
 
 
     srand(0);
 
-    for (int i=0;i<40;i++) {
+    for (int i=0;i<80;i++) {
         position = (Vector3){
-            -20.0f - 4.0f * ( rand() % 10 ),
+            -20.0f - 4.0f * ( rand() % 10 ) / 2.0f,
             -1.5f,
-            110.0f + 8.0f * pow(i, 1.01)
+            110.0f + 8.0f * pow(i, 1.02)
         };
 
         DrawCube(position, 4.0f, 1.0f, 4.0f, squareColor);
