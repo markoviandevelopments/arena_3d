@@ -18,6 +18,7 @@
 #define PORT 12346
 #define BUFFER_SIZE 256
 #define SERVER_IP "50.188.120.138"
+#define NO_ROTATION 0.0f
 
 extern Model foxModel;              // Declare the global fox model
 extern ModelAnimation *animations;  // Declare global animations
@@ -33,7 +34,6 @@ typedef struct {
 
 // Function prototypes
 void DrawChessboard(int boardSize, float squareSize);
-// void DrawPlayers(int id, float x, float y, float z, float x1, float y1, float z1);
 void DrawPlayers(
     int id1, float x, float y, float z, int animIndex1, float animFrame1, float yaw1, bool isGhostMode,
     float x1, float y1, float z1, int animIndex2, float animFrame2

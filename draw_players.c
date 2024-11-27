@@ -28,6 +28,7 @@ void DrawSinglePlayer(Vector3 position, int animIndex, float animFrame, Color co
     DrawCubeWires(position, 0.15f, 0.3f, 0.15f, BLACK);
 }
 
+
 void DrawPlayers(
     int id1, float x, float y, float z, int animIndex1, float animFrame1, float yaw1, bool isGhostMode,
     float x1, float y1, float z1, int animIndex2, float animFrame2
@@ -46,3 +47,4 @@ void DrawPlayers(
     DrawSinglePlayer(position2, animIndex2, animFrame2, YELLOW, 0.0f);
 
 }
+
