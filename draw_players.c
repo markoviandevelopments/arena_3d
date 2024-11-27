@@ -40,8 +40,8 @@ void DrawPlayers(
         // Player 1
         DrawSinglePlayer(position1, animIndex1, animFrame1, id1 ? RED : BLUE, yaw1);
     } else {
-        DrawCube(position1, 0.15f, 0.3f, 0.15f, YELLOW);
-        DrawCubeWires(position1, 0.15f, 0.3f, 0.15f, BLACK);
+        DrawCube(position1, 0.05f, 0.3f, 0.05f, id1 ? RED : BLUE);
+        DrawCubeWires(position1, 0.05f, 0.3f, 0.05f, BLACK);
     }
 
     // Player 2
