@@ -2,9 +2,18 @@
 
 int Grounds(float x, float y, float z) {
 
+    float x_m;
+    float z_m;
+
+    srand(0);
+
     // Preston Parkour :)
-    if (x > -12.0f && x < -8.0f && z > 108.0f && z < 112.0f && y > -1.0f && y < 0.0f) {
-        return 1;
+    for (int i=0; i<20;i++) {
+        x_m = -20.0f - 4.0f * ( rand() % 10 );
+        z_m = 110.0f + 8.0f * i;
+        if (x > x_m - 2.0f && x < x_m + 2.0f && z >z_m - 2.0f && z < z_m + 2.0f && y > -1.0f && y < 0.0f) {
+            return 1;
+        }
     }
 
 

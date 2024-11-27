@@ -21,6 +21,7 @@ double server_time;
 float data[20] = {0.0f, -40.0f, 0.0f};
 
 int sensitivity = 0;
+int sensitivity_r = 0;
 
 bool isGhostMode = false;
 
@@ -96,7 +97,7 @@ int main() {
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
 
-        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, Walls, Ladders, &sensitivity, data[9], data[10]);
+        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, Walls, Ladders, &sensitivity, &sensitivity_r, data[9], data[10]);
 
         isMoving = isWalkingPlayer1 || isRunningPlayer1;
         isRunning = isRunningPlayer1;
@@ -107,7 +108,7 @@ int main() {
         // Update animation
         UpdateFoxAnimation(deltaTime, isMoving, isRunning);
 
-        UpdatePlayerCamera(&camera, &player, deltaTime);
+        UpdatePlayerCamera(&camera, &player, deltaTime, &sensitivity_r);
 
         // Determine animation state for Player 1
         int animIndex1 = idleAnimation; // Default to idle
@@ -246,7 +247,7 @@ int main() {
         //DrawPicture();
         EndMode3D();
 
-        Color text_color = RAYWHITE;
+        Color text_color = (Color){150, 0, 100, 255};
 
         DrawText("Move with WASD, look with arrow keys, jump with SPACE", 10, 10, 20, text_color);
         DrawText(TextFormat("Frequency: %.2f Hz", frequency), 10, 40, 20, text_color);
@@ -259,6 +260,8 @@ int main() {
         } else {
             DrawText(TextFormat("Sensitivity: %d", sensitivity), 10, 180, 20, text_color);
         }
+        DrawText(TextFormat("Rotation Sensitivity: %d", sensitivity_r), 10, 210, 20, text_color);
+
         EndDrawing();
     }
     UnloadFoxAnimations();

@@ -7,12 +7,12 @@
 int wait_c = 0;
 
 // Update the camera's position and handle rotation
-void UpdatePlayerCamera(Camera3D *camera, Player *player, float deltaTime) {
+void UpdatePlayerCamera(Camera3D *camera, Player *player, float deltaTime, int *sensitivity_r) {
     // Handle camera/player rotation
-    if (IsKeyDown(KEY_LEFT)) player->yaw -= TURN_SPEED * deltaTime;   // Rotate left
-    if (IsKeyDown(KEY_RIGHT)) player->yaw += TURN_SPEED * deltaTime;  // Rotate right
-    if (IsKeyDown(KEY_DOWN)) player->pitch -= TURN_SPEED * deltaTime;   // Look up
-    if (IsKeyDown(KEY_UP)) player->pitch += TURN_SPEED * deltaTime; // Look down
+    if (IsKeyDown(KEY_LEFT)) player->yaw -= TURN_SPEED * deltaTime * pow(2, *sensitivity_r);   // Rotate left
+    if (IsKeyDown(KEY_RIGHT)) player->yaw += TURN_SPEED * deltaTime * pow(2, *sensitivity_r);  // Rotate right
+    if (IsKeyDown(KEY_DOWN)) player->pitch -= TURN_SPEED * deltaTime * pow(2, *sensitivity_r);   // Look up
+    if (IsKeyDown(KEY_UP)) player->pitch += TURN_SPEED * deltaTime * pow(2, *sensitivity_r); // Look down
 
     // Clamp the pitch to avoid flipping
     if (player->pitch > 89.0f) player->pitch = 89.0f;
@@ -66,6 +66,7 @@ void HandlePlayerMovement(
     bool *isJumping, int (*Walls)(float, float, float),
     int (*Ladders)(float, float, float),
     int *sensitivity,
+    int *sensitivity_r,
     float spawn_x,
     float spawn_z
 ) {
@@ -75,6 +76,8 @@ void HandlePlayerMovement(
     player->moveDirection = (Vector3){ 0.0f, 0.0f, 0.0f };
 
     player->isOnLadder = Ladders(player->position.x, player->position.y, player->position.z);
+
+    int is_strafing = 0;
 
     // Movement input handling
     if (IsKeyDown(KEY_W)) { // Move forward
@@ -97,18 +100,20 @@ void HandlePlayerMovement(
         player->moveDirection.x += cos(DEG2RAD * (player->yaw - 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
         player->moveDirection.z += sin(DEG2RAD * (player->yaw - 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
         *isWalking = true;
+        is_strafing = 1;
     }
     if (IsKeyDown(KEY_D)) { // Strafe right
         player->moveDirection.x += cos(DEG2RAD * (player->yaw + 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
         player->moveDirection.z += sin(DEG2RAD * (player->yaw + 90)) * MOVE_SPEED * deltaTime * pow(2, (double)(*sensitivity));
         *isWalking = true;
+        is_strafing = 1;
     }
 
     // Update yaw based on moveDirection
-    if (Vector3Length(player->moveDirection) > 0.01f) {
+    if (Vector3Length(player->moveDirection) > 0.01f && !is_strafing) {
 
         float baseYaw = atan2(player->moveDirection.z, player->moveDirection.x) * RAD2DEG;
-  
+
         // If moving backward, invert the yaw
         if (IsKeyDown(KEY_S)) {
             player->yaw = baseYaw - 180.0f; // Face the opposite direction
@@ -121,14 +126,24 @@ void HandlePlayerMovement(
         if (player->yaw >= 360.0f) player->yaw -= 360.0f;
     }
 
-    if (IsKeyDown(KEY_M) && !wait_c) { // Increase sensitivity
+    if (IsKeyDown(KEY_M) && !wait_c) { // Increase movement sensitivity
         (*sensitivity)++;
         wait_c += 10;
     }
-    if (IsKeyDown(KEY_N) && !wait_c) { // Decrease Sensitivity
+    if (IsKeyDown(KEY_N) && !wait_c) { // Decrease movement sensitivity
         (*sensitivity)--;
         wait_c += 10;
     }
+
+    if (IsKeyDown(KEY_K) && !wait_c) { // Increase rotational sensitivity
+        (*sensitivity_r)++;
+        wait_c += 10;
+    }
+    if (IsKeyDown(KEY_J) && !wait_c) { // Decrease rotational sensitivity
+        (*sensitivity_r)--;
+        wait_c += 10;
+    }
+
 
     if (wait_c > 0) {
         wait_c--;

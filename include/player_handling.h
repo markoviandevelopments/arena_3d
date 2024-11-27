@@ -26,10 +26,11 @@ void HandlePlayerMovement(
     bool *isJumping, int (*Walls)(float, float, float),
     int (*Ladders)(float, float, float),
     int *sensitivity,
+    int *sensitivity_r,
     float spawn_x,
     float spawn_z
 );
 void ApplyGravity(Player *player, float deltaTime);
-void UpdatePlayerCamera(Camera3D *camera, Player *player, float deltaTime);
+void UpdatePlayerCamera(Camera3D *camera, Player *player, float deltaTime, int *sensitivity_r);
 
 #endif // PLAYER_HANDLING_H
