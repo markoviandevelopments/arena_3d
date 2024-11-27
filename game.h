@@ -41,7 +41,7 @@ void DrawPlayers(
 void DrawThing(double server_time);
 void DrawArena();
 void DrawMansion();
-void DrawPrestonparkour();
+void DrawPrestonparkour(float *data);
 void DrawSecrethouse();
 void DrawAHouse();
 void DrawArrowpad(float *data);
@@ -53,6 +53,7 @@ void DrawPicture();
 void AlterBrownian(float *data);
 void AlterArrowpad(float *data, PlayerShort *playerData);
 void AlterBot(float *data);
+void AlterPrestonparkour(float *data, PlayerShort *playerData);
 void DrawBrownian(float *data);
 
 #endif

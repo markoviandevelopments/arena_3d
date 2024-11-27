@@ -188,7 +188,7 @@ int main() {
             }
 
             int dataIndex = 0;
-            while (dynamicPart && dataIndex < 11) {
+            while (dynamicPart && dataIndex < 12) {
                 if (sscanf(dynamicPart, "%f", &data[dataIndex]) == 1) {
                     dataIndex++;
                 }
@@ -237,7 +237,7 @@ int main() {
         );
         DrawArena();
         DrawMansion();
-        DrawPrestonparkour();
+        DrawPrestonparkour(data);
         DrawSecrethouse();
         DrawAHouse();
         DrawArrowpad(data);
