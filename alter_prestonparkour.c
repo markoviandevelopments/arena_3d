@@ -13,7 +13,7 @@ void AlterPrestonparkour(float *data, PlayerShort *playerData) {
         y = playerData[i].y;
         z = playerData[i].z;
 
-        if (z > data[11] && x > -70.0f && x < 10.0f && y > -1.0f) {
+        if (z > data[11] && x > -90.0f && x < 20.0f && y > -1.0f) {
             data[11] = z;
         }
 
