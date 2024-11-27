@@ -12,7 +12,7 @@ void DrawPrestonparkour(float *data) {
         position = (Vector3){
             -20.0f - 4.0f * (( rand() % 10 ) / 10.0f - 0.5f) * 2.0f * 2.0f * pow(2, i / 80.0f) ,
             -1.5f,
-            110.0f + 8.0f * pow(i, 1.010f)
+            110.0f + 5.0f * pow(i, 1.010f)
         };
 
         DrawCube(position, 4.0f, 1.0f, 4.0f, squareColor);
