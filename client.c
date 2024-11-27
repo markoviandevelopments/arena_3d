@@ -96,7 +96,7 @@ int main() {
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
 
-        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, Walls, Ladders, &sensitivity);
+        HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, Walls, Ladders, &sensitivity, data[9], data[10]);
 
         isMoving = isWalkingPlayer1 || isRunningPlayer1;
         isRunning = isRunningPlayer1;

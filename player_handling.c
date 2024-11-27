@@ -65,7 +65,9 @@ void HandlePlayerMovement(
     Player *player, float deltaTime, bool *isWalking, bool *isRunning,
     bool *isJumping, int (*Walls)(float, float, float),
     int (*Ladders)(float, float, float),
-    int *sensitivity
+    int *sensitivity,
+    float spawn_x,
+    float spawn_z
 ) {
     *isWalking = false;
     *isRunning = false;
@@ -156,8 +158,8 @@ void HandlePlayerMovement(
     }
 
     if (player->position.y < -20.0f) {
-        player->position.x = 0.0f;
-        player->position.z = 0.0f;
+        player->position.x = spawn_x;
+        player->position.z = spawn_z;
         player->position.y = 5.0f;
         player->velocityY = 0.0f;
         player->yaw = 90.0f;
