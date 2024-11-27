@@ -4,11 +4,11 @@ void DrawPrestonparkour() {
     Color squareColor = RED;
 
     Vector3 position = {
-        -10.0f - 0.5f,
+        -10.0f - 2.0f,
         -1.0f,
-        101.0f - 0.5f
+        102.0f - 2.0f
     };
 
-    DrawCube(position, 1.0f, 1.0f, 1.0f, squareColor);
-    DrawCubeWires(position, 1.0f, 1.0f, 1.0f, BLACK);
+    DrawCube(position, 4.0f, 1.0f, 4.0f, squareColor);
+    DrawCubeWires(position, 4.0f, 1.0f, 4.0f, BLACK);
 }
