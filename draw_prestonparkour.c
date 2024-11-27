@@ -10,7 +10,7 @@ void DrawPrestonparkour(float *data) {
 
     for (int i=0;i<80;i++) {
         position = (Vector3){
-            -20.0f - 4.0f * (( rand() % 10 ) / 10.0f - 0.5f) * 2.0f * 2.0f * pow(2, i / 80.0f) ,
+            -20.0f - 4.0f * (( rand() % 10 ) / 10.0f - 0.5f) * 2.0f * 2.0f * pow(2, i / 60.0f) ,
             -1.5f,
             110.0f + 5.0f * pow(i, 1.010f)
         };
