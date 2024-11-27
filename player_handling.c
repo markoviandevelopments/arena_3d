@@ -206,7 +206,7 @@ void ApplyGravity(Player *player, float deltaTime) {
     if ((!player->isGrounded && !Grounds(player->position.x, player->position.y - 0.1f, player->position.z)) && !player->isOnLadder && !IsKeyDown(KEY_O)) {
         player->velocityY += GRAVITY * deltaTime;
     } else if (IsKeyDown(KEY_O)) {
-        player->velocityY -= GRAVITY * deltaTime;
+        player->velocityY = 7.5f;
     }
 
     if (!player->isOnLadder) { // Disable gravity effect on a ladder
