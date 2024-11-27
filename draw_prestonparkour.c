@@ -15,6 +15,11 @@ void DrawPrestonparkour(float *data, double server_time) {
             110.0f + 5.0f * pow(i, 1.010f)
         };
 
+        squareColor = (Color){43, 255, 0, 200};
+        if ((int)round(server_time / 100.0) % 180 == i) {
+            squareColor = (Color){0, 0, 255, 200};
+        }
+
         DrawCube(position, 4.0f, 1.0f, 4.0f, squareColor);
         DrawCubeWires(position, 4.0f, 1.0f, 4.0f, BLACK);
 
