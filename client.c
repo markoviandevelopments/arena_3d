@@ -25,6 +25,8 @@ int sensitivity_r = 0;
 
 bool isGhostMode = false;
 
+WillsBlocks willsBlocks[BLOCKCOUNT];
+
 int main() {
 
     // Networking variables
@@ -245,6 +247,7 @@ int main() {
         DrawThing(server_time);
         DrawBrownian(data);
         //DrawPicture();
+        DrawWillsBlocks(willsBlocks);
         EndMode3D();
 
         Color text_color = (Color){150, 0, 100, 255};

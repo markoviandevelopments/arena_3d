@@ -19,6 +19,7 @@
 #define BUFFER_SIZE 256
 #define SERVER_IP "50.188.120.138"
 #define NO_ROTATION 0.0f
+#define BLOCKCOUNT 10
 
 extern Model foxModel;              // Declare the global fox model
 extern ModelAnimation *animations;  // Declare global animations
@@ -31,6 +32,10 @@ typedef struct {
     float x, y, z;
 } PlayerShort;
 
+typedef struct {
+    Vector3 position;
+    Color blockColor;
+} WillsBlocks;
 
 // Function prototypes
 void DrawChessboard(int boardSize, float squareSize);
@@ -42,6 +47,7 @@ void DrawThing(double server_time);
 void DrawArena();
 void DrawMansion();
 void DrawPrestonparkour(float *data, double server_time);
+void DrawWillsBlocks(WillsBlocks *blocks);
 void DrawSecrethouse();
 void DrawAHouse();
 void DrawArrowpad(float *data);
