@@ -2,7 +2,6 @@
 
 int Walls(float x, float y, float z) {
 
-
     // arrowpad
     if (y < 1.5f && ( (x < -11.0f && z < 17.0f && x > -20.0f && z > 14.0f ) || (x < -14.0f && z < 20.0f && x > -17.0f && z > 11.0f) ) ) {
         return 1;
@@ -68,8 +67,25 @@ int Walls(float x, float y, float z) {
     if (y > -0.1f && y < 25.0f && x >= 1000.0f && x < 1030.0f && z > 970.0f && z <1000.0f) {
         return 1;
     }
+    return 0;
+}
 
+// Checks for collisions with maze walls
+int MazeCollision(float x, float y, float z, int maze[MAZE_SIZE][MAZE_SIZE]) {
+    int gridX = (int)((x - X_OFFSET) / SPACING);
+    int gridZ = (int)((z - Z_OFFSET) / SPACING);
 
+    printf("Player Position: (%.2f, %.2f)\n", x, z);
+    printf("Grid Position: (%d, %d)\n", gridX, gridZ);
+
+    if (y > -1.0f && y < 2.0f && gridX >= 0 && gridX < MAZE_SIZE && gridZ >= 0 && gridZ < MAZE_SIZE) {
+        // printf("Maze Value: %d\n", maze[gridZ][gridX]);
+        if (maze[gridZ][gridX] == 1) {
+            // printf("Collision Detected!\n");
+            return 1;
+        }
+    }
 
     return 0;
 }
+

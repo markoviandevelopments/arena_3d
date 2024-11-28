@@ -3,6 +3,9 @@
 
 #include "raylib.h"
 #include "raymath.h"
+#include "../game.h"
+
+extern int maze[MAZE_SIZE][MAZE_SIZE];
 
 typedef struct Player {
     Vector3 position;
