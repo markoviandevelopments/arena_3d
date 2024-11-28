@@ -80,13 +80,27 @@ int Walls(float x, float y, float z) {
     return 0;
 }
 
+bool IsPlayerInMaze(float x, float y, float z) {
+    // Calculate the grid coordinates based on player's position
+    int gridX = (int)((x - X_OFFSET) / SPACING);
+    int gridZ = (int)((z - Z_OFFSET) / SPACING);
+
+    // Check if the player is within maze bounds
+    if (y > -1.0f && y < 2.0f && gridX >= 0 && gridX < MAZE_SIZE && gridZ >= 0 && gridZ < MAZE_SIZE) {
+        return true; // Inside the maze bounds
+    }
+
+    return false; // Outside the maze bounds
+}
+
+
 // Checks for collisions with maze walls
 int MazeCollision(float x, float y, float z, int maze[MAZE_SIZE][MAZE_SIZE]) {
     int gridX = (int)(((x + 1.0f) - X_OFFSET) / SPACING);
     int gridZ = (int)(((z + 1.0f) - Z_OFFSET) / SPACING);
 
-    printf("Player Position: (%.2f, %.2f)\n", x, z);
-    printf("Grid Position: (%d, %d)\n", gridX, gridZ);
+    // printf("Player Position: (%.2f, %.2f)\n", x, z);
+    // printf("Grid Position: (%d, %d)\n", gridX, gridZ);
 
     if (y > -1.0f && y < 2.0f && gridX >= 0 && gridX < MAZE_SIZE && gridZ >= 0 && gridZ < MAZE_SIZE) {
         // printf("Maze Value: %d\n", maze[gridZ][gridX]);

@@ -37,10 +37,6 @@ typedef struct {
     float x, y, z;
 } PlayerShort;
 
-typedef struct {
-    Vector3 position;
-    Color blockColor;
-} WillsBlocks;
 
 // Function prototypes
 void DrawChessboard(int boardSize, float squareSize);
@@ -62,6 +58,7 @@ void DrawBot(float *data);
 int Ladders(float x, float y, float z);
 int Grounds(float x, float y, float z);
 int Walls(float x, float y, float z);
+bool IsPlayerInMaze(float x, float y, float z);
 int MazeCollision(float x, float y, float z, int maze[MAZE_SIZE][MAZE_SIZE]);
 void DrawPicture();
 void AlterBrownian(float *data);
