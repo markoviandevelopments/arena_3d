@@ -101,6 +101,7 @@ int main() {
         float deltaTime = GetFrameTime();
 
         HandlePlayerMovement(&player, deltaTime, &isWalkingPlayer1, &isRunningPlayer1, &is_jumping, Walls, Ladders, &sensitivity, &sensitivity_r, data[9], data[10]);
+        Teleports(&player);
 
         isMoving = isWalkingPlayer1 || isRunningPlayer1;
         isRunning = isRunningPlayer1;
@@ -265,6 +266,7 @@ int main() {
             DrawText(TextFormat("Sensitivity: %d", sensitivity), 10, 180, 20, text_color);
         }
         DrawText(TextFormat("Rotation Sensitivity: %d", sensitivity_r), 10, 210, 20, text_color);
+        DrawText(TextFormat("Yaw: %.2f  Pitch: %.2f", player.yaw, player.pitch), 10, 240, 20, text_color);
 
         EndDrawing();
     }

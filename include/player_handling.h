@@ -32,5 +32,6 @@ void HandlePlayerMovement(
 );
 void ApplyGravity(Player *player, float deltaTime);
 void UpdatePlayerCamera(Camera3D *camera, Player *player, float deltaTime, int *sensitivity_r);
+void Teleports(Player *player);
 
 #endif // PLAYER_HANDLING_H
