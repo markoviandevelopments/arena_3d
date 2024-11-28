@@ -37,6 +37,7 @@ void carve_passage(int x, int y, int maze[MAZE_SIZE][MAZE_SIZE]) {
 }
 
 void GenerateMaze(int maze[MAZE_SIZE][MAZE_SIZE]) {
+    // Initialize the maze with all walls
     for (int y = 0; y < MAZE_SIZE; ++y) {
         for (int x = 0; x < MAZE_SIZE; ++x) {
             maze[y][x] = 1;
@@ -44,9 +45,14 @@ void GenerateMaze(int maze[MAZE_SIZE][MAZE_SIZE]) {
     }
 
     srand(69);
+
+    // Set the starting point within the maze to carve passages
     int start_x = (rand() % ((MAZE_SIZE - 1) / 2)) * 2 + 1;
     int start_y = (rand() % ((MAZE_SIZE - 1) / 2)) * 2 + 1;
     maze[start_y][start_x] = 0;
+
+    // Ensure the maze has an entrance (e.g., top-left corner)
+    maze[1][0] = 0;  // Entrance on the top row
 
     carve_passage(start_x, start_y, maze);
 }
@@ -57,6 +63,7 @@ void DrawMaze(int maze[MAZE_SIZE][MAZE_SIZE]) {
         for (int x = 0; x < MAZE_SIZE; ++x) {
             if (maze[y][x] == 1){
                 DrawCube((Vector3){x * SPACING + X_OFFSET, 1.0f, y * SPACING + Z_OFFSET}, SPACING, 1.5f, SPACING, wallColor);
+                DrawCubeWires((Vector3){x * SPACING + X_OFFSET, 1.0f, y * SPACING + Z_OFFSET}, SPACING, 1.5f, SPACING, BLACK);
             }
         }
     }
