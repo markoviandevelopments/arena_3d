@@ -59,6 +59,16 @@ int Walls(float x, float y, float z) {
     }
 
     // Remotehouse
+    if (y > 0.0f && y < 20.0f && x >= 1015.0f && x < 1016.0f && z > 997.50f && z < 999.0f) {
+        return 1;
+    }
+    if (y > 0.0f && y < 20.0f && x >= 1015.0f && x < 1016.0f && z > 992.0f && z < 994.5f) {
+        return 1;
+    }
+    if (y > 0.0f && y < 20.0f && x >= 1001.0f && x < 1015.0f && z > 992.0 f && z < 993.0f) {
+        return 1;
+    }
+
 
     if (y > -0.1f && y < 25.0f && x >= 1001.0f && x < 1029.0f && z > 971.0f && z <999.0f) {
         return 0;
