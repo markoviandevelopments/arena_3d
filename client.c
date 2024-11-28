@@ -193,7 +193,7 @@ int main() {
             }
 
             int dataIndex = 0;
-            while (dynamicPart && dataIndex < 12) {
+            while (dynamicPart && dataIndex < 15) {
                 if (sscanf(dynamicPart, "%f", &data[dataIndex]) == 1) {
                     dataIndex++;
                 }
@@ -252,6 +252,7 @@ int main() {
         DrawBrownian(data);
         //DrawPicture();
         DrawMaze(maze);
+        DrawCat(data);
 
         EndMode3D();
 

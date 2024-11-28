@@ -25,7 +25,7 @@ typedef struct {
 PlayerShort playerData [2] = {{ .id = 0, .x = 0.0f, .y = 0.0f, .z = 90.0f }, { .id = 1, .x = 0.0f, .y = 0.0f, .z = 90.0f }};
 int nextPlayerId = 0;
 
-float data[20] = {0.0f, -40.0f, 1.0f, 0.0f, -40.0f, 1.0f, 0.7f, 1.6f, 0.0f, 0.0f, 15.0f, 100.0f}; // (x-pos, z-pos, food ... x2), agent 1 angle, agent 2 angle, arrow state, x of arrow rc bot, z of arrow rc bot, record in Prestonparkour
+float data[20] = {0.0f, -40.0f, 1.0f, 0.0f, -40.0f, 1.0f, 0.7f, 1.6f, 0.0f, 0.0f, 15.0f, 100.0f, -35.0f, 0.4f, 70.0f}; // (x-pos, z-pos, food ... x2), agent 1 angle, agent 2 angle, arrow state, x of arrow rc bot, z of arrow rc bot, record in Prestonparkour, cat x, cat y, cat z
 
 pthread_mutex_t playerMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t dataMutex = PTHREAD_MUTEX_INITIALIZER;
@@ -64,6 +64,7 @@ void *update_data_thread(void *arg) {
         AlterArrowpad(data, playerData);
         AlterBot(data);
         AlterPrestonparkour(data, playerData);
+        AlterCat(data);
 
         pthread_mutex_unlock(&dataMutex);
 
@@ -104,7 +105,7 @@ void *handle_client(void *arg) {
 
         snprintf(buffer, BUFFER_SIZE, "%d %f %f %f %f %f %f %lf %f %f %f %f %f %f", player_id, playerData[player_id].x, playerData[player_id].y, playerData[player_id].z, playerData[1 - player_id].x, playerData[1 - player_id].y, playerData[1 - player_id].z, current_time, data[0], data[1], data[2], data[3], data[4], data[5]);
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 9; i++) {
             char temp[32];
             snprintf(temp, sizeof(temp), " %f", data[i + 6]);
             strncat(buffer, temp, BUFFER_SIZE - strlen(buffer) - 1);
