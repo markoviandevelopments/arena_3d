@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include <stdlib.h>
 #include <time.h>
+#include <time.h>
 
 static inline Color GenerateWallColor(){
     return (Color){ rand() % 256, rand() % 256, rand() % 256, 255 };

@@ -82,8 +82,8 @@ int Walls(float x, float y, float z) {
 
 // Checks for collisions with maze walls
 int MazeCollision(float x, float y, float z, int maze[MAZE_SIZE][MAZE_SIZE]) {
-    int gridX = (int)((x - X_OFFSET) / SPACING);
-    int gridZ = (int)((z - Z_OFFSET) / SPACING);
+    int gridX = (int)(((x + 1.0f) - X_OFFSET) / SPACING);
+    int gridZ = (int)(((z + 1.0f) - Z_OFFSET) / SPACING);
 
     printf("Player Position: (%.2f, %.2f)\n", x, z);
     printf("Grid Position: (%d, %d)\n", gridX, gridZ);

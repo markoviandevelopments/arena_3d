@@ -187,17 +187,20 @@ void HandlePlayerMovement(
         player->position.z + player->moveDirection.z,
     };
 
-    if (!Walls(proposedPosition.x, player->position.y, player->position.z) && !MazeCollision(proposedPosition.x, player->position.y, player->position.z, maze)) {
+    if (!Walls(proposedPosition.x, player->position.y, player->position.z) &&
+        !MazeCollision(proposedPosition.x, player->position.y, player->position.z, maze)) {
         player->position.x = proposedPosition.x; // Apply X movement
     } else {
         player->moveDirection.x = 0.0f; // Stop X movement
     }
 
-    if (!Walls(player->position.x, player->position.y, proposedPosition.z) && !MazeCollision(player->position.x, player->position.y, proposedPosition.z, maze)) {
+    if (!Walls(player->position.x, player->position.y, proposedPosition.z) &&
+        !MazeCollision(player->position.x, player->position.y, proposedPosition.z, maze)) {
         player->position.z = proposedPosition.z; // Apply Z movement
     } else {
         player->moveDirection.z = 0.0f; // Stop Z movement
     }
+
 
 }
 
