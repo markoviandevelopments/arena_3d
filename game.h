@@ -19,12 +19,17 @@
 #define BUFFER_SIZE 256
 #define SERVER_IP "50.188.120.138"
 #define NO_ROTATION 0.0f
-#define BLOCKCOUNT 10
+#define MAZE_SIZE 21
+#define SPACING 2.0f
+#define X_OFFSET -95
+#define Z_OFFSET -10
 
 extern Model foxModel;              // Declare the global fox model
 extern ModelAnimation *animations;  // Declare global animations
 extern int animCount;               // Declare animation count
 extern float animFrame;             // Declare animation frame
+
+extern int maze[MAZE_SIZE][MAZE_SIZE];
 
 // Player structure
 typedef struct {
@@ -48,7 +53,8 @@ void DrawArena();
 void DrawMansion();
 void DrawRemotehouse();
 void DrawPrestonparkour(float *data, double server_time);
-void DrawWillsBlocks(WillsBlocks *blocks);
+void GenerateMaze(int maze[MAZE_SIZE][MAZE_SIZE]);
+void DrawMaze(int maze[MAZE_SIZE][MAZE_SIZE]);
 void DrawSecrethouse();
 void DrawAHouse();
 void DrawArrowpad(float *data);
@@ -56,6 +62,7 @@ void DrawBot(float *data);
 int Ladders(float x, float y, float z);
 int Grounds(float x, float y, float z);
 int Walls(float x, float y, float z);
+int MazeCollision(float x, float y, float z, int maze[MAZE_SIZE][MAZE_SIZE]);
 void DrawPicture();
 void AlterBrownian(float *data);
 void AlterArrowpad(float *data, PlayerShort *playerData);

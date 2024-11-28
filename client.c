@@ -25,8 +25,7 @@ int sensitivity_r = 0;
 
 bool isGhostMode = false;
 
-
-WillsBlocks willsBlocks[BLOCKCOUNT];
+int maze[MAZE_SIZE][MAZE_SIZE];
 
 int main() {
 
@@ -83,6 +82,8 @@ int main() {
     Player player;
     InitializePlayer(&player, (Vector3){ 0.0f, 1.0f, 0.0f });
     OtherPlayer otherPlayer = { .position = { 2.0f, 1.0f, 2.0f } };
+
+    GenerateMaze(maze);
 
     // Initialize camera
     Camera3D camera = { 0 };
@@ -250,7 +251,8 @@ int main() {
         DrawThing(server_time);
         DrawBrownian(data);
         //DrawPicture();
-        DrawWillsBlocks(willsBlocks);
+        DrawMaze(maze);
+
         EndMode3D();
 
         Color text_color = (Color){150, 0, 100, 255};

@@ -5,7 +5,7 @@ void DrawAHouse() {
     static bool isModelLoaded = false;
     if (!isModelLoaded) {
         model = LoadModel("models/a_house.obj"); // Load the model
-        Texture2D texture = LoadTexture("models/surreal.png"); // Load the texture
+        Texture2D texture = LoadTexture("models/a_house_texture.png"); // Load the texture
 
         // After loading the texture
         SetTextureFilter(texture, TEXTURE_FILTER_TRILINEAR); // Or TEXTURE_FILTER_BILINEAR
