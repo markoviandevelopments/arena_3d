@@ -241,6 +241,7 @@ int main() {
         );
         DrawArena();
         DrawMansion();
+        DrawRemotehouse();
         DrawPrestonparkour(data, server_time);
         DrawSecrethouse();
         DrawAHouse();

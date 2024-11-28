@@ -67,6 +67,11 @@ int Grounds(float x, float y, float z) {
     }
 
 
+    // Remotehouse
+    if (x > 950.0f && x < 1050.0f && z > 950.0f && z < 1050.0f && y >= -2.0f + PLAYER_HEIGHT && y <= 0.0 + PLAYER_HEIGHT) {
+        return 1;
+    }
+
 
 
 

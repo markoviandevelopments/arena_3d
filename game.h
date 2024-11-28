@@ -46,6 +46,7 @@ void DrawPlayers(
 void DrawThing(double server_time);
 void DrawArena();
 void DrawMansion();
+void DrawRemotehouse();
 void DrawPrestonparkour(float *data, double server_time);
 void DrawWillsBlocks(WillsBlocks *blocks);
 void DrawSecrethouse();

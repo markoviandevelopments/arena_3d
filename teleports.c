@@ -9,11 +9,12 @@ void Teleports(Player *player) {
     float z = player->position.z;
 
     if (z < -35.0f && z > -46.0f && x < -97.0f && x > -98.0f && y > 0.0f && y < 20.0f) {
-        player->position.x = 0.0f;
-        player->position.z = 0.0f;
-        player->position.y = 5.0f;
-        player->yaw = 90.0f;
-        player->pitch = 0.0f;
+        player->position.x = 1020.0f;
+        player->position.z = 986.0f;
+        player->position.y = 1.1f;
+        player->velocityY = 0.0f;
+        player->yaw = 263.0f;
+        player->pitch = 59.0f;
     }
 
 }
