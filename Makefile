@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -std=c99 -pedantic
 LDFLAGS = -lraylib -lm -pthread
 
 # Source files
-SERVER_SRC = server.c alter_brownian.c alter_arrowpad.c alter_bot.c alter_prestonparkour.c alter_cat.c
+SERVER_SRC = server.c alter_brownian.c alter_arrowpad.c alter_bot.c alter_prestonparkour.c alter_cat.c grounds.c walls.c
 CLIENT_SRC = client.c draw_chessboard.c draw_players.c draw_thing.c draw_arena.c ladders.c grounds.c walls.c draw_picture.c fox_animation.c player_handling.c draw_brownian.c draw_secrethouse.c draw_a_house.c draw_arrowpad.c draw_bot.c draw_mansion.c draw_prestonparkour.c draw_willohparkour.c teleports.c draw_remotehouse.c draw_cat.c
 COMMON_HEADER = game.h
 

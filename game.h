@@ -64,7 +64,7 @@ void DrawPicture();
 void AlterBrownian(float *data);
 void AlterArrowpad(float *data, PlayerShort *playerData);
 void AlterBot(float *data);
-void AlterCat(float *data);
+void AlterCat(float *data, float *cat_dx, float *cat_dz, float *cat_ddx, float *cat_ddz, int *cat_counter);
 void AlterPrestonparkour(float *data, PlayerShort *playerData);
 void DrawBrownian(float *data);
 void DrawCat(float *data);

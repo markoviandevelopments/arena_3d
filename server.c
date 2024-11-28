@@ -27,6 +27,13 @@ int nextPlayerId = 0;
 
 float data[20] = {0.0f, -40.0f, 1.0f, 0.0f, -40.0f, 1.0f, 0.7f, 1.6f, 0.0f, 0.0f, 15.0f, 100.0f, -35.0f, 0.4f, 70.0f}; // (x-pos, z-pos, food ... x2), agent 1 angle, agent 2 angle, arrow state, x of arrow rc bot, z of arrow rc bot, record in Prestonparkour, cat x, cat y, cat z
 
+//Cat info
+float cat_dx = 0.0f;
+float cat_dz = 0.0f;
+float cat_ddx = 0.0f;
+float cat_ddz = 0.0f;
+int cat_counter = 0;
+
 pthread_mutex_t playerMutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t dataMutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -64,7 +71,7 @@ void *update_data_thread(void *arg) {
         AlterArrowpad(data, playerData);
         AlterBot(data);
         AlterPrestonparkour(data, playerData);
-        AlterCat(data);
+        AlterCat(data, &cat_dx, &cat_dz, &cat_ddx, &cat_ddz, &cat_counter);
 
         pthread_mutex_unlock(&dataMutex);
 
