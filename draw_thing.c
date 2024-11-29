@@ -13,9 +13,19 @@ void DrawThing(double server_time) {
         DrawCubeWires(position, 0.6f, 0.55f, 0.6f, BLACK);
     }
 
-
-
-
+    float k = 0.0f; 
+    for (int layer = 0; layer < 100; layer++){
+        for (int block = 0; block < 100; block++) {
+            Vector3 position = {
+                0.0f + pow(100 - pow(k, 2), 0.5f) * sin(((server_time * 0.00001f)/sin((server_time * 0.00001f)) + block)/ 100.0f * 3.14f * 2),
+                0.5f + layer / 9.0f,
+                -40.0f + pow(100 - pow(k, 2), 0.5f) * cos(((server_time * 0.00001f)/(sin((server_time * 0.00001f))) + block)/ 100.0f * 3.14f * 2)
+            };
+            DrawCube(position, 0.6f, 0.55f, 0.6f, squareColor);
+            DrawCubeWires(position, 0.6f, 0.55f, 0.6f, BLACK);
+        }
+        k += 0.1f;
+    }
 
 
     Color square2Color = (Color){25, 255, 255, 180};
