@@ -1,16 +1,19 @@
 #include "game.h"
 
 void DrawThing(double server_time) {
-    Color squareColor = (Color){255, 0, 255, 200};
+    Color squareColor = (Color){255, 255, 0, 200};
 
-    Vector3 position = {
-        0.0f + 10.3f * sin(2.31f * server_time / 1000.0) + 10.1f * cos(0.4f * server_time / 1000.0),
-        0.5f,
-        -40.0f + 10.4f * cos(server_time / 1000.0)
-         };
+    for (int block = 0; block < 10; block++){
+        Vector3 position = {
+            0.0f + 6.9f * sin(((server_time * 0.00001f)/sin((server_time * 0.00001f)) + block)/ 10.0f * 3.14f * 2),
+            0.5f,
+            -40.0f + 6.9f * cos(((server_time * 0.00001f)/(sin((server_time * 0.00001f))) + block)/ 10.0f * 3.14f * 2)
+        };
+        DrawCube(position, 0.6f, 0.55f, 0.6f, squareColor);
+        DrawCubeWires(position, 0.6f, 0.55f, 0.6f, BLACK);
+    }
 
-    DrawCube(position, 0.6f, 0.55f, 0.6f, squareColor);
-    DrawCubeWires(position, 0.6f, 0.55f, 0.6f, BLACK);
+
 
 
 

@@ -10,7 +10,6 @@
 #include "raymath.h"
 
 #include "include/fox_animation.h"
-#include "include/player_handling.h"
 #include "game.h"
 
 float animFramePlayer1 = 0.0f;

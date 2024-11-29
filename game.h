@@ -7,6 +7,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "raymath.h"
 
 // Constants
 #define MOVE_SPEED 5.0f     // Movement speed
@@ -37,9 +38,36 @@ typedef struct {
     float x, y, z;
 } PlayerShort;
 
+typedef struct Player {
+    Vector3 position;
+    Vector3 moveDirection;
+    float velocityY;
+    bool isGrounded;
+    bool isOnLadder;
+    float yaw;
+    float pitch;
+} Player;
+
+ typedef struct {
+    Vector3 position;
+    int id;
+} OtherPlayer;
 
 // Function prototypes
 void DrawChessboard(int boardSize, float squareSize);
+void InitializePlayer(Player *player, Vector3 startPosition);
+void HandlePlayerMovement(
+    Player *player, float deltaTime, bool *isWalking, bool *isRunning,
+    bool *isJumping, int (*Walls)(float, float, float),
+    int (*Ladders)(float, float, float),
+    int *sensitivity,
+    int *sensitivity_r,
+    float spawn_x,
+    float spawn_z
+);
+void ApplyGravity(Player *player, float deltaTime);
+void UpdatePlayerCamera(Camera3D *camera, Player *player, float deltaTime, int *sensitivity_r);
+void Teleports(Player *player);
 void DrawPlayers(
     int id1, float x, float y, float z, int animIndex1, float animFrame1, float yaw1, bool isGhostMode,
     float x1, float y1, float z1, int animIndex2, float animFrame2
